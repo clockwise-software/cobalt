@@ -62,7 +62,7 @@ def surnameSearch():
 @app.route("/Employee/UpdateEmployee", methods = ['POST','GET'])
 def studentUpdateDetails():
 	if request.method =='GET':
-		return render_template('EmployeeData.html')
+		return render_template('EmployeeUpdate.html')
 	if request.method =='POST':
 		firstName = request.form.get('firstName', default="Error") 
 		lastName = request.form.get('lastName', default="Error")
@@ -71,8 +71,8 @@ def studentUpdateDetails():
 		try:
 			conn = sqlite3.connect(DATABASE)
 			cur = conn.cursor()
-			cur.execute("UPDATE EmployeeList SET 'State/Province' = state WHERE 'FirstName' = firstName\
-						AND 'LastName' = lastName")
+			cur.execute("UPDATE EmployeeList SET 'State/Province' = state WHERE 'FirstName' = ?\
+						AND 'LastName' = ?", (firstName,lastName))
 
 			conn.commit()
 			msg = "Record successfully updated"
