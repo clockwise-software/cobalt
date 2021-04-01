@@ -15,7 +15,7 @@ Member Roles:
 - **Zia**: Brainstorming/problem visualization, prototyping, python (you didn't oversell it)
 - **Faith**: Backend and organizing updates, documentation, and schedules
 - **Jessa**: 
-- **Bethany**: 
+- **Bethany**: Bootstrap and CSS
 - **All**: Backend (support each other)  
 
 - **Unassigned**: DB schema
