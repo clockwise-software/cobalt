@@ -71,8 +71,8 @@ def studentUpdateDetails():
 		try:
 			conn = sqlite3.connect(DATABASE)
 			cur = conn.cursor()
-			cur.execute("UPDATE 'EmployeeList' SET 'State/Province'=? WHERE 'FirstName'=?\
-						AND 'LastName'=?", (state, firstName, lastName))
+			cur.execute("UPDATE 'EmployeeList' SET 'State/Province'=? WHERE FirstName=?\
+						AND LastName=?", (state, firstName, lastName))
 
 			conn.commit()
 			msg = "Record successfully updated"
