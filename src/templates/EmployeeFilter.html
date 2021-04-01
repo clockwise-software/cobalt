@@ -1,0 +1,99 @@
+{%extends 'generalPageStyledLeftColumn.html'%}
+
+
+{%block mainBlock%}
+
+
+<div class="row">
+    <div class="col-2">
+        <div class="row">
+            <div class="col">
+                <form action="/Filter" method="GET" id="filterForm">
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="" data-toggle="collapse" href="#filter1">
+                                Registered License
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body collapse show" id="filter1">
+                        {% for license in licenseData %}
+                        <input type="checkbox" name="filter1" value="{{license[0]}}"> {{license[1]}} <br>
+                        {% endfor %}
+                    </div> 
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="" data-toggle="collapse" href="#filter2">
+                                Skill
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body collapse" id="filter2">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                        proident.
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="" data-toggle="collapse" href="#filter3">
+                                Skill Level
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body collapse" id="filter3">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                        proident.
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="" data-toggle="collapse" href="#filter4">
+                                Location
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body collapse" id="filter4">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                        proident.
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-10">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                    aria-selected="true">Employee Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                    aria-controls="profile" aria-selected="false">Map</a>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p>Table goes here</p>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <p>Map goes here</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(document).ready(function ($) {
+        $('#filterForm input').change(function(){
+            $('#filterForm').submit();
+        });
+    });
+</script>
+
+{%endblock%}
