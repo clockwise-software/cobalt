@@ -60,7 +60,7 @@ def surnameSearch():
 			return render_template('Employee.html', data = data)
 
 @app.route("/Employee/UpdateEmployee", methods = ['POST','GET'])
-def studentAddDetails():
+def studentUpdateDetails():
 	if request.method =='GET':
 		return render_template('EmployeeData.html')
 	if request.method =='POST':
