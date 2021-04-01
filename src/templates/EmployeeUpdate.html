@@ -15,8 +15,10 @@
 
 <script>
   function loadName() {
+    var firstName = document.forms["myForm"]["firstName"].value;
+    var lastName = document.forms["myForm"]["lastName"].value;
     var state = document.forms["myForm"]["state"].value;
-    params = 'state='+state;
+    params = 'firstName='+firstName+'&lastName='+lastName+'&state='+state;
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
