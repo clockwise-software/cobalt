@@ -6,7 +6,7 @@ import os
 from flask import Flask, redirect, request, render_template
 import sqlite3
 
-DATABASE = 'bootcamp.db'
+DATABASE = 'employee.db'
 
 app = Flask(__name__)
 
@@ -15,8 +15,21 @@ app = Flask(__name__)
 def basic():
     return render_template('Employee.html')
 
+@app.route("/Filter")
+def filter():
+    filter1 = request.args.getlist('filter1')
+    print("Filter 1: " + str(filter1))
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM 'license'")
+    licenseData = cur.fetchall()
+    cur.execute("SELECT * FROM 'skill'")
+    skillData = cur.fetchall()
+    cur.execute("SELECT DISTINCT SkillLevel FROM 'EmployeeList'")
+    skillLevelData = cur.fetchall()
+    return render_template('EmployeeFilter.html', filter1=filter1, licenseData=licenseData, skillData=skillData, skillLevelData=skillLevelData)
 
-@app.route("/Employee/AddEmployee", methods=['POST', 'GET'])
+@app.route("/Employee/AddEmployee", methods = ['POST','GET'])
 def studentAddDetails():
     if request.method == 'GET':
         return render_template('EmployeeData.html')
