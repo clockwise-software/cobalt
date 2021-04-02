@@ -5,34 +5,35 @@
 <h2>Update Employee Data</h2>
 
 <form id='myForm' onsubmit="return loadName()">
-  <label>First name of employee to change:<input type = "text" name = "firstName"><br></label>
-  <label>Last name of employee to change:<input type = "text" name = "lastName"><br></label>
-  <label>New state:<input type = "text" name = "state"><br></label>
+    <input type="hidden" name="id" value="{{data[0]}}">
+    <label>First name of employee to change:<input type="text" name="firstName" value="{{data[1]}}"><br></label>
+    <label>Last name of employee to change:<input type="text" name="lastName"><br></label>
+    <label>New state:<input type="text" name="state"><br></label>
 
-  <button type = "submit"> submit </button>
+    <button type="submit"> submit </button>
 </form>
 <span id='txt'></span>
 
 <script>
-  function loadName() {
-    var firstName = document.forms["myForm"]["firstName"].value;
-    var lastName = document.forms["myForm"]["lastName"].value;
-    var state = document.forms["myForm"]["state"].value;
-    params = 'firstName='+firstName+'&lastName='+lastName+'&state='+state;
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function() {
-      if (xhttp.readyState === 4 && xhttp.status === 200) {
-        console.log(xhttp.responseText);
-        document.getElementById("txt").innerHTML = xhttp.responseText;
-      } else {
-        console.error(xhttp.statusText);
-      }
-    };
-    xhttp.send(params);
-    return false;
-  }
+    function loadName() {
+        var firstName = document.forms["myForm"]["firstName"].value;
+        var lastName = document.forms["myForm"]["lastName"].value;
+        var state = document.forms["myForm"]["state"].value;
+        params = 'firstName=' + firstName + '&lastName=' + lastName + '&state=' + state;
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.onload = function () {
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
+                console.log(xhttp.responseText);
+                document.getElementById("txt").innerHTML = xhttp.responseText;
+            } else {
+                console.error(xhttp.statusText);
+            }
+        };
+        xhttp.send(params);
+        return false;
+    }
 
 </script>
 
