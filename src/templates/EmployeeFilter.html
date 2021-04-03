@@ -10,24 +10,24 @@
             <div class="col">
                 <form action="/FilterSearch" method="GET" id="filterForm">
                     <div class="card">
-                        <div class="card-header">
-                            <a class="" data-toggle="collapse" href="#filter1">
+                        <!--<div class="card-header">-->
+                            <a class="card-header" data-toggle="collapse" href="#filter1" id="filterName">
                                 Registered License
                             </a>
-                        </div>
+                        <!--</div>-->
                     </div>
-                    <div class="card-body collapse show" id="filter1">
+                    <div class="card-body collapse" id="filter1">
                         {% for license in licenseData %}
                         <input type="checkbox" name="filter1" value="{{license[1]}}"> {{license[1]}} <br>
                         {% endfor %}
                     </div> 
 
                     <div class="card">
-                        <div class="card-header">
-                            <a class="" data-toggle="collapse" href="#filter2">
+                        <!--<div class="card-header">-->
+                            <a class="card-header" data-toggle="collapse" href="#filter2">
                                 Skill
                             </a>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter2">
                         {% for skill in skillData %}
@@ -36,11 +36,11 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-header">
-                            <a class="" data-toggle="collapse" href="#filter3">
+                        <!--<div class="card-header">-->
+                            <a class="card-header" data-toggle="collapse" href="#filter3">
                                 Skill Level
                             </a>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter3">
                         {% for skillLevel in skillLevelData %}
@@ -49,11 +49,11 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-header">
-                            <a class="" data-toggle="collapse" href="#filter4">
+                        <!--<div class="card-header">-->
+                            <a class="card-header" data-toggle="collapse" href="#filter4">
                                 States
                             </a>
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter4">
                         {% for location in locationData %}
@@ -124,7 +124,9 @@
         $('#employeeList').change(function() {
             console.log('Fix datatable');
             for(i=0; i<dataTable.length; i++){
-                dataTable[i].destroy();
+                if(dataTable[i] != null){
+                    dataTable[i].destroy();
+                }
                 dataTable[i] = null;
             }
             let dataTableTemp = $('table.data-table').DataTable({
