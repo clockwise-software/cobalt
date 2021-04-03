@@ -1,4 +1,4 @@
- `city', `lat`, `lng`, `stateId`, `stateName`, `countyName`, `countyFips`
+ 'city', 'lat', 'lng', 'stateId', 'stateName', 'countyName', 'countyFips'
  'Dunseith',48.8131,-100.061, 'ND', 'North Dakota', 'Rolette', '38079'
  'Mylo',48.6353,-99.6188, 'ND', 'North Dakota', 'Rolette', '38079'
  'Antler',48.9709,-101.282, 'ND', 'North Dakota', 'Bottineau', '38009'
