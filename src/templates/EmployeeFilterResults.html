@@ -1,0 +1,33 @@
+<div class="content mt-4">
+    <table class="table table-striped data-table">
+    <thead>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Business Unit</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Title</td>
+        <td>Licenses</td>
+        <td>Skill</td>
+        <td>Skill Level</td>
+        <td>State</td>
+    </thead>
+
+    {% for employee in employeeList %}
+    <!-- A List of tuples so row is each item in the list
+            and then the index is the column number.-->
+        <tr>
+            <td>{{employee['FirstName']}}</td>
+            <td>{{employee['LastName']}}</td>
+            <td>{{employee['BusinessUnit']}}</td>
+            <td>{{employee['City']}}</td>
+            <td>{{employee['StateProvince']}}</td>
+            <td>{{employee['CareerMatrixTitle']}}</td>
+            <td>{{employee['RegisteredLicenses']}}</td>
+            <td>{{employee['Skill']}}</td>
+            <td>{{employee['SkillLevel']}}</td>
+            <td>{{employee['StateProvince']}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
