@@ -80,7 +80,7 @@ def surnameSearch():
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
-    xid = request.args.get('xid', default="Error")
+    xid = request.args.get('xid', default="12")
     if request.method == 'GET':
         print("label"+xid)
         try:
@@ -129,6 +129,28 @@ def studentUpdateDetails():
         except:
             conn.rollback()
             msg = "error in update operation"
+        finally:
+            conn.close()
+            return msg
+
+@app.route("/Employee/DeleteEmployee", methods = ['POST','GET'])
+def studentDeleteDetails():
+    if request.method == 'GET':
+        return render_template('EmployeeDelete.html')
+    if request.method == 'POST':
+        firstName = request.form.get('firstName', default="Error")
+        lastName = request.form.get('lastName', default="Error")
+        print("deleting employee"+firstName)
+        try:
+            conn = sqlite3.connect(DATABASE)
+            cur = conn.cursor()
+            cur.execute("DELETE FROM 'EmployeeList' WHERE FirstName=? AND LastName=?", (firstName, lastName))
+
+            conn.commit()
+            msg = "Record successfully deleted" #the deletion works but this doesn't print on the webpage, not sure why
+        except:
+            conn.rollback()
+            msg = "error in delete operation"
         finally:
             conn.close()
             return msg
