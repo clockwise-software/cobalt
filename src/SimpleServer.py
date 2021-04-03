@@ -6,7 +6,7 @@ import os
 from flask import Flask, redirect, request, render_template
 import sqlite3
 
-DATABASE = 'employee.db'
+DATABASE = 'employee.db' 
 
 app = Flask(__name__)
 
