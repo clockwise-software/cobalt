@@ -3,8 +3,9 @@
 ## Updated by Dr. Mike Borowczak @ UWyo March 2021
 
 import os
-from flask import Flask, redirect, request, render_template
+from flask import Flask, redirect, request, render_template, jsonify, make_response
 import sqlite3
+import DBUtils
 
 DATABASE = 'employee.db'
 
@@ -22,11 +23,57 @@ def filter():
     cur = conn.cursor()
     cur.execute("SELECT * FROM 'license'")
     licenseData = cur.fetchall()
-    cur.execute("SELECT * FROM 'skill'")
+    cur.execute("SELECT * FROM 'skill' ORDER BY Skill")
     skillData = cur.fetchall()
-    cur.execute("SELECT DISTINCT SkillLevel FROM 'EmployeeList'")
+    cur.execute("SELECT DISTINCT SkillLevel FROM 'EmployeeList' WHERE SkillLevel <> ''")
     skillLevelData = cur.fetchall()
-    return render_template('EmployeeFilter.html', filter1=filter1, licenseData=licenseData, skillData=skillData, skillLevelData=skillLevelData)
+    cur.execute("SELECT DISTINCT StateProvince from 'EmployeeList' ORDER BY StateProvince")
+    locationData = cur.fetchall()
+    return render_template('EmployeeFilter.html', filter1=filter1, licenseData=licenseData, skillData=skillData, skillLevelData=skillLevelData, locationData = locationData)
+
+@app.route("/FilterSearch")
+def filterFind():
+    filter1 = request.args.getlist('filter1')
+    filter2 = request.args.getlist('filter2')
+    filter3 = request.args.getlist('filter3')
+    filter4 = request.args.getlist('filter4')
+    if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
+        html = render_template('EmployeeFilterResults.html', employeeList=[])
+        return make_response(jsonify({"html": html}))
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    sql = ''
+    params = []
+    for filter in filter1:
+        if (sql != ''):
+            sql += " or "
+        sql += "RegisteredLicenses like ?"
+        params.append("%" + filter + "%")
+    for filter in filter2:
+        if (sql != ''):
+            sql += " or "
+        sql += "skill like ?"
+        params.append("%" + filter + "%")
+    for filter in filter3:
+        if (sql != ''):
+            sql += " or "
+        sql += "skillLevel like ?"
+        params.append("%" + filter + "%")
+    for filter in filter4:
+        if (sql != ''):
+            sql += " or "
+        sql += "StateProvince like ?"
+        params.append("%" + filter + "%")
+    sql = "select * from EmployeeList where " + sql
+    print(sql)
+    print(params)
+    cur.execute(sql,params)
+    employeeList = cur.fetchall()
+    employeeList = DBUtils.convertToDictionary(cur,employeeList)
+    print(employeeList)
+    html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
+    return make_response(jsonify({"html": html}))
+    ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
 
 @app.route("/Employee/AddEmployee", methods = ['POST','GET'])
 def studentAddDetails():
