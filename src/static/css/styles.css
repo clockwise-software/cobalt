@@ -1,3 +1,19 @@
+/*
+These are the colors used by Trihydro
+ #8A1F03 (dark red) used in logo
+ #000000 (black) used for some text and in logo
+ #62859E (blue) only found in photos on page
+ #656565 (gray) used as foot element on page and in menu
+ #AB5236 (orange) used as offset backgroun in page
+ #F1F1F2 (off white) used for background and text
+ #829825 (green) used for footer and some buttons
+ */
+
+ /*
+ Add this link to every html page for favicon
+ <link rel="shortcut icon" type="image/png" href="static/img/favicon.png"/>
+ */
+
 .column {
     border: 2px blue solid;
 }
@@ -5,9 +21,16 @@
 main > .container {
   padding: 60px 15px 0;
 }
-
-.footer {
-  background-color: #f5f5f5;
+/*Styles footer to match Trihydro webpage*/
+footer {
+  background-color: #829825;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding-bottom: 20px;
+  width: 100%;
+  color: #F1F1F2;
+  text-align: center;
 }
 
 .footer > .container {
