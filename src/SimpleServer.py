@@ -42,7 +42,7 @@ def studentAddDetails():
         try:
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
-            cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'Business Unit', 'State/Province')\
+            cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'BusinessUnit', 'StateProvince')\
 						VALUES (?,?,?,?)", (firstName, lastName, businessunit, state))
 
             conn.commit()
@@ -80,8 +80,8 @@ def surnameSearch():
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
+    xid = request.args.get('xid', default="Error")
     if request.method == 'GET':
-        xid = request.args.get('xid', default="Error")
         print("label"+xid)
         try:
             # rem: args for get form for post
@@ -95,20 +95,34 @@ def studentUpdateDetails():
             conn.close()
         finally:
             conn.close()
-            #if data = NULL, initialize it (array with as many empty strings in it as there are columns to fill out for employee ###########
+            if data==[]:
+                for i in range(len(data)):
+                    data[i]=None
             employee = data[0]
-            # return str(data)
             return render_template('EmployeeUpdate.html',data=employee)
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
+        jobStatus = request.form.get('jobStatus', default="Error")
+        businessUnit = request.form.get('businessUnit', default="Error")
+        city = request.form.get('city', default="Error")
         state = request.form.get('state', default="Error")
+        careerTitle = request.form.get('careerTitle', default="Error")
+        totalYears = request.form.get('totalYears', default="Error")
+        licenses = request.form.get('licenses', default="Error")
+        skills = request.form.get('skills', default="Error")
+        skillLevel = request.form.get('skillLevel', default="Error")
+        lat = request.form.get('lat', default="Error")
+        longi = request.form.get('longi', default="Error")
+        isAvailable = request.form.get('isAvailable', default="Error")
         print("updating employee"+firstName)
         try:
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
-            cur.execute("UPDATE 'EmployeeList' SET 'State/Province'=? WHERE FirstName=?\
-						AND LastName=?", (state, firstName, lastName))
+            cur.execute("UPDATE 'EmployeeList' SET 'FirstName'=?, 'LastName'=?, 'JobStatus'=?, 'BusinessUnit'=?,\
+                'City'=?, 'StateProvince'=?, 'CareerMatrixTitle'=?, 'TotalYears'=?, 'RegisteredLicenses'=?,\
+                    'Skill'=?, 'SkillLevel'=?, 'Lat'=?, 'Long'=?, 'IsAvailable'=? WHERE Id=?\
+                        ", (firstName, lastName, jobStatus, businessUnit, city, state, careerTitle, totalYears, licenses, skills, skillLevel, lat, longi, isAvailable, xid))
 
             conn.commit()
             msg = "Record successfully updated"

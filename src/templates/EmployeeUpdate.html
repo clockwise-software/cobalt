@@ -6,9 +6,20 @@
 
 <form id='myForm' onsubmit="return loadName()">
     <input type="hidden" name="id" value="{{data[0]}}">
-    <label>First name of employee to change:<input type="text" name="firstName" value="{{data[1]}}"><br></label>
-    <label>Last name of employee to change:<input type="text" name="lastName"><br></label>
-    <label>New state:<input type="text" name="state"><br></label>
+    <label>First Name:<input type="text" name="firstName" value="{{data[1]}}"><br></label>
+    <label>Last Name:<input type="text" name="lastName" value="{{data[2]}}"><br></label>
+    <label>Job Status:<input type="text" name="jobStatus" value="{{data[3]}}"><br></label>
+    <label>Business Unit:<input type="text" name="businessUnit" value="{{data[4]}}"><br></label>
+    <label>City:<input type="text" name="city" value="{{data[5]}}"><br></label>
+    <label>State/Province:<input type="text" name="state" value="{{data[6]}}"><br></label>
+    <label>Career Title:<input type="text" name="careerTitle" value="{{data[7]}}"><br></label>
+    <label>Total Years:<input type="text" name="totalYears" value="{{data[8]}}"><br></label>
+    <label>Registered Licenses:<input type="text" name="licenses" value="{{data[9]}}"><br></label>
+    <label>Skills:<input type="text" name="skills" value="{{data[10]}}"><br></label>
+    <label>Skill Level:<input type="text" name="skillLevel" value="{{data[11]}}"><br></label>
+    <label>Latitude:<input type="text" name="lat" value="{{data[12]}}"><br></label>
+    <label>Longitude:<input type="text" name="longi" value="{{data[13]}}"><br></label>
+    <label>Is Available?:<input type="text" name="isAvailable" value="{{data[14]}}"><br></label>
 
     <button type="submit"> submit </button>
 </form>
@@ -18,8 +29,19 @@
     function loadName() {
         var firstName = document.forms["myForm"]["firstName"].value;
         var lastName = document.forms["myForm"]["lastName"].value;
+        var jobStatus = document.forms["myForm"]["jobStatus"].value;
+        var businessUnit = document.forms["myForm"]["businessUnit"].value;
+        var city = document.forms["myForm"]["city"].value;
         var state = document.forms["myForm"]["state"].value;
-        params = 'firstName=' + firstName + '&lastName=' + lastName + '&state=' + state;
+        var careerTitle = document.forms["myForm"]["careerTitle"].value;
+        var totalYears = document.forms["myForm"]["totalYears"].value;
+        var licenses = document.forms["myForm"]["licenses"].value;
+        var skills = document.forms["myForm"]["skills"].value;
+        var skillLevel = document.forms["myForm"]["skillLevel"].value;
+        var lat = document.forms["myForm"]["lat"].value;
+        var longi = document.forms["myForm"]["longi"].value;
+        var isAvailable = document.forms["myForm"]["isAvailable"].value;
+        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&lat=' + lat + '&longi=' + longi + '&isAvailable=' + isAvailable;
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
