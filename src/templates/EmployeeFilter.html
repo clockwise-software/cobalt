@@ -124,7 +124,9 @@
         $('#employeeList').change(function() {
             console.log('Fix datatable');
             for(i=0; i<dataTable.length; i++){
-                dataTable[i].destroy();
+                if(dataTable[i] != null){
+                    dataTable[i].destroy();
+                }
                 dataTable[i] = null;
             }
             let dataTableTemp = $('table.data-table').DataTable({
