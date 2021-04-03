@@ -5,10 +5,10 @@
 
 
 <div class="row">
-    <div class="col-2">
+    <div class="col-sm-2">
         <div class="row">
             <div class="col">
-                <form action="/Filter" method="GET" id="filterForm">
+                <form action="/FilterSearch" method="GET" id="filterForm">
                     <div class="card">
                         <div class="card-header">
                             <a class="" data-toggle="collapse" href="#filter1">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="card-body collapse show" id="filter1">
                         {% for license in licenseData %}
-                        <input type="checkbox" name="filter1" value="{{license[0]}}"> {{license[1]}} <br>
+                        <input type="checkbox" name="filter1" value="{{license[1]}}"> {{license[1]}} <br>
                         {% endfor %}
                     </div> 
 
@@ -30,9 +30,9 @@
                         </div>
                     </div>
                     <div class="card-body collapse" id="filter2">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                        proident.
+                        {% for skill in skillData %}
+                        <input type="checkbox" name="filter2" value="{{skill[1]}}"> {{skill[1]}} <br>
+                        {% endfor %}
                     </div>
 
                     <div class="card">
@@ -43,22 +43,22 @@
                         </div>
                     </div>
                     <div class="card-body collapse" id="filter3">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                        proident.
+                        {% for skillLevel in skillLevelData %}
+                        <input type="checkbox" name="filter3" value="{{skillLevel[0]}}"> {{skillLevel[0]}} <br>
+                        {% endfor %}
                     </div>
 
                     <div class="card">
                         <div class="card-header">
                             <a class="" data-toggle="collapse" href="#filter4">
-                                Location
+                                States
                             </a>
                         </div>
                     </div>
                     <div class="card-body collapse" id="filter4">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                        proident.
+                        {% for location in locationData %}
+                        <input type="checkbox" name="filter4" value="{{location[0]}}"> {{location[0]}} <br>
+                        {% endfor %}
                     </div>
                 </form>
             </div>
@@ -68,20 +68,21 @@
     <div class="col-10">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                    aria-selected="true">Employee Results</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#employeeList" role="tab" aria-controls="home"
+                    aria-selected="true">Employee Results </a>
+                <button class="btn btn-link">Test</button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#map" role="tab"
                     aria-controls="profile" aria-selected="false">Map</a>
             </li>
 
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="employeeList" role="tabpanel" aria-labelledby="home-tab">
                 <p>Table goes here</p>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade" id="profile" role="map" aria-labelledby="profile-tab">
                 <p>Map goes here</p>
             </div>
         </div>
@@ -89,10 +90,57 @@
 </div>
 
 <script>
+    var dataTable = [];
+
     jQuery(document).ready(function ($) {
-        $('#filterForm input').change(function(){
-            $('#filterForm').submit();
+
+        
+        function fetchResults(formId,elementId) {
+            data = {};
+            if (formId != '') {
+                data = $(formId).serialize();
+            }
+            $.ajax({
+                url: '/FilterSearch',
+                type: 'GET',
+                data: data,
+                dataType:'json',
+                success : function(data) {              
+                    html = data.html;
+                    $(elementId).html(html);
+                    $(elementId).trigger('change');
+                },
+                error : function(request,error)
+                {
+                    $(elementId).html('<div class="alert alert-danger mt-4">Request Failed</div>');
+                }
+            });
+        }
+
+        $('#filterForm input').click(function(e){
+            fetchResults('#filterForm','#employeeList')
         });
+
+        $('#employeeList').change(function() {
+            console.log('Fix datatable');
+            for(i=0; i<dataTable.length; i++){
+                dataTable[i].destroy();
+                dataTable[i] = null;
+            }
+            let dataTableTemp = $('table.data-table').DataTable({
+                searching: false,
+                stateSave: true,
+                fixedHeader: true,
+                paging: false
+            });
+            dataTable.push(dataTableTemp);
+        });
+        
+
+        // fetch results when page first loads
+        fetchResults('#filterForm','#employeeList')
+
+
     });
 </script>
 
