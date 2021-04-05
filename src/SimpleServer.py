@@ -64,7 +64,6 @@ def filterFind():
         if (sql != ''):
             sql += " or "
         sql += "StateProvince like ?"
-        params.append("%" + filter + "%")
     sql = "select * from EmployeeList where " + sql
     print(sql)
     print(params)
@@ -75,6 +74,17 @@ def filterFind():
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
+
+@app.route("/Test")
+def test():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM 'EmployeeList'")
+    employeeList = cur.fetchall()
+    conn.close()
+    employeeList = DBUtils.convertToDictionary(cur,employeeList)
+    return render_template('EmployeeData2.html', employeeList=employeeList)
+
 
 @app.route("/Employee/AddEmployee", methods = ['POST','GET'])
 def studentAddDetails():

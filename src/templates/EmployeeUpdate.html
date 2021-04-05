@@ -1,8 +1,13 @@
-{%extends 'generalPageStyled.html'%}
+{%extends 'generalPageStyledLeftColumn.html'%}
 
 
 {%block mainBlock%}
-<h2>Update Employee Data</h2>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Update</h1>
+        <p class="lead">Edit an employee from user or admin privilege.</p>
+    </div>
+</div>
 
 <form id='myForm' onsubmit="return loadName()">
     <input type="hidden" name="id" value="{{data[0]}}">
