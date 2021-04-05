@@ -11,22 +11,22 @@
                 <form action="/FilterSearch" method="GET" id="filterForm">
                     <div class="card">
                         <!--<div class="card-header">-->
-                            <a class="card-header" data-toggle="collapse" href="#filter1" id="filterName">
-                                Registered License
-                            </a>
+                        <a class="card-header" data-toggle="collapse" href="#filter1" id="filterName">
+                            Registered License
+                        </a>
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter1">
                         {% for license in licenseData %}
                         <input type="checkbox" name="filter1" value="{{license[1]}}"> {{license[1]}} <br>
                         {% endfor %}
-                    </div> 
+                    </div>
 
                     <div class="card">
                         <!--<div class="card-header">-->
-                            <a class="card-header" data-toggle="collapse" href="#filter2">
-                                Skill
-                            </a>
+                        <a class="card-header" data-toggle="collapse" href="#filter2">
+                            Skill
+                        </a>
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter2">
@@ -37,9 +37,9 @@
 
                     <div class="card">
                         <!--<div class="card-header">-->
-                            <a class="card-header" data-toggle="collapse" href="#filter3">
-                                Skill Level
-                            </a>
+                        <a class="card-header" data-toggle="collapse" href="#filter3">
+                            Skill Level
+                        </a>
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter3">
@@ -50,15 +50,29 @@
 
                     <div class="card">
                         <!--<div class="card-header">-->
-                            <a class="card-header" data-toggle="collapse" href="#filter4">
-                                States
-                            </a>
+                        <a class="card-header" data-toggle="collapse" href="#filter4">
+                            States
+                        </a>
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter4">
                         {% for location in locationData %}
                         <input type="checkbox" name="filter4" value="{{location[0]}}"> {{location[0]}} <br>
                         {% endfor %}
+                    </div>
+
+                    <div class="card">
+                        <!--<div class="card-header">-->
+                        <a class="card-header" data-toggle="collapse" href="#filter5">
+                            Last Name
+                        </a>
+                        <!--</div>-->
+                    </div>
+                    <div class="card-body collapse" id="filter5">
+                        <div class="form-group">
+                            <input type="name" name="filter5" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Last Name">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -68,13 +82,12 @@
     <div class="col-10">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#employeeList" role="tab" aria-controls="home"
-                    aria-selected="true">Employee Results </a>
-                <button class="btn btn-link">Test</button>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#employeeList" role="tab"
+                    aria-controls="home" aria-selected="true">Employee Results </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#map" role="tab"
-                    aria-controls="profile" aria-selected="false">Map</a>
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#map" role="tab" aria-controls="profile"
+                    aria-selected="false">Map</a>
             </li>
 
         </ul>
@@ -94,8 +107,8 @@
 
     jQuery(document).ready(function ($) {
 
-        
-        function fetchResults(formId,elementId) {
+
+        function fetchResults(formId, elementId) {
             data = {};
             if (formId != '') {
                 data = $(formId).serialize();
@@ -104,27 +117,26 @@
                 url: '/FilterSearch',
                 type: 'GET',
                 data: data,
-                dataType:'json',
-                success : function(data) {              
+                dataType: 'json',
+                success: function (data) {
                     html = data.html;
                     $(elementId).html(html);
                     $(elementId).trigger('change');
                 },
-                error : function(request,error)
-                {
+                error: function (request, error) {
                     $(elementId).html('<div class="alert alert-danger mt-4">Request Failed</div>');
                 }
             });
         }
 
-        $('#filterForm input').click(function(e){
-            fetchResults('#filterForm','#employeeList')
+        $('#filterForm input').click(function (e) {
+            fetchResults('#filterForm', '#employeeList')
         });
 
-        $('#employeeList').change(function() {
+        $('#employeeList').change(function () {
             console.log('Fix datatable');
-            for(i=0; i<dataTable.length; i++){
-                if(dataTable[i] != null){
+            for (i = 0; i < dataTable.length; i++) {
+                if (dataTable[i] != null) {
                     dataTable[i].destroy();
                 }
                 dataTable[i] = null;
@@ -137,10 +149,10 @@
             });
             dataTable.push(dataTableTemp);
         });
-        
+
 
         // fetch results when page first loads
-        fetchResults('#filterForm','#employeeList')
+        fetchResults('#filterForm', '#employeeList')
 
 
     });
