@@ -1,14 +1,23 @@
 {%extends 'generalPageStyled.html'%}
 
-
 {%block mainBlock%}
 <h2>Add Employee Data</h2>
 
 <form id='myForm' onsubmit="return loadName()">
-  <label>First name:<input type = "text" name = "firstName"><br></label>
-  <label>Last Name:<input type = "text" name = "lastName"><br></label>
-  <label>Business Unit:<input type = "text" name = "bu"><br></label>
-  <label>State:<input type = "text" name = "state"><br></label>
+    <label>First Name:<input type="text" name="firstName"><br></label>
+    <label>Last Name:<input type="text" name="lastName"><br></label>
+    <label>Job Status:<input type="text" name="jobStatus"><br></label>
+    <label>Business Unit:<input type="text" name="businessUnit"><br></label>
+    <label>City:<input type="text" name="city"><br></label>
+    <label>State/Province:<input type="text" name="state"><br></label>
+    <label>Career Title:<input type="text" name="careerTitle"><br></label>
+    <label>Total Years:<input type="text" name="totalYears"><br></label>
+    <label>Registered Licenses:<input type="text" name="licenses"><br></label>
+    <label>Skills:<input type="text" name="skills"><br></label>
+    <label>Skill Level:<input type="text" name="skillLevel"><br></label>
+    <label>Latitude:<input type="text" name="lat"><br></label>
+    <label>Longitude:<input type="text" name="longi"><br></label>
+    <label>Is Available?:<input type="text" name="isAvailable"><br></label>
 
   <button type = "submit"> submit </button>
 </form>
@@ -18,9 +27,19 @@
   function loadName() {
     var firstName = document.forms["myForm"]["firstName"].value;
     var lastName = document.forms["myForm"]["lastName"].value;
-    var businessunit = document.forms["myForm"]["bu"].value;
+    var jobStatus = document.forms["myForm"]["jobStatus"].value;
+    var businessUnit = document.forms["myForm"]["businessUnit"].value;
+    var city = document.forms["myForm"]["city"].value;
     var state = document.forms["myForm"]["state"].value;
-    params = 'firstName='+firstName+'&lastName='+lastName+'&bu='+businessunit+'&state='+state;
+    var careerTitle = document.forms["myForm"]["careerTitle"].value;
+    var totalYears = document.forms["myForm"]["totalYears"].value;
+    var licenses = document.forms["myForm"]["licenses"].value;
+    var skills = document.forms["myForm"]["skills"].value;
+    var skillLevel = document.forms["myForm"]["skillLevel"].value;
+    var lat = document.forms["myForm"]["lat"].value;
+    var longi = document.forms["myForm"]["longi"].value;
+    var isAvailable = document.forms["myForm"]["isAvailable"].value;
+    params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&lat=' + lat + '&longi=' + longi + '&isAvailable=' + isAvailable;
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/Employee/AddEmployee', true); // true is asynchronous
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
