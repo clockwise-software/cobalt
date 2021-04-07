@@ -9,14 +9,14 @@
     <title>SE Bootcamp</title>
 
 
-    
+
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css?v=4" rel="stylesheet">
 
     <link rel="stylesheet" href="/static/js/plugins/datatables/datatables.min.css">
 
     <link href="/static/css/styles.css" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="static/img/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="static/img/favicon.ico" />
 
 
     <!--Font Awesome-->
@@ -38,7 +38,7 @@
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <img src="/static/img/Trihydro_Logo_Horizontal.png" height="30" class="d-inline-block align-top"
                     alt="logo">
             </a>
@@ -52,16 +52,20 @@
                         <a class="nav-link" href="/Filter">Employee Search</a>
                         <i class="fas fa-search"></i>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Employee/UpdateEmployee">View Employee (User)</a>
+                        <i class="fas fa-search"></i>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown">
-                            Admin
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View Employees (Admin)
                         </a>
-                        <div class="dropdown-menu">
-                            <a class="nav-link" href="/Employee/AddEmployee">Add Employee</a>
-                            <a class="nav-link" href="/Employee/Search">Modify Employee</a>
-                            <a class="nav-link" href="/Employee/DeleteEmployee">Delete Employee</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/Test">View</a>
+                            <a class="dropdown-item" href="/Employee/UpdateEmployee">Insert</a>
                         </div>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -69,20 +73,18 @@
 
     <!-- Begin page content -->
 
-        <div id="pageContent">
-            {% block mainBlock%}Page under construction. {%endblock%}
-        </div>
+    <div id="pageContent">
+        {% block mainBlock%}Page under construction. {%endblock%}
+    </div>
 
 
-    <footer class="footer mt-auto py-3 bg-dark">
-        <div class="container">
-            <span class="text-muted">A collaborative pilot between Wyoming's Innovation Network of Public Higher
-                Education Instutitions and
-                Cardiff University.</span>
-        </div>
+    <footer>
+        <br />
+        <tiny>A collaborative pilot between Wyoming's Innovation Network of Public Higher Education Instutitions and
+            Cardiff University.</tiny>
     </footer>
 
-    
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/static/js/plugins/datatables/datatables.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
