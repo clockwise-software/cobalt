@@ -6,6 +6,7 @@ import os
 from flask import Flask, redirect, request, render_template, jsonify, make_response
 import sqlite3
 import DBUtils
+import csv
 
 DATABASE = 'employee.db'
 
@@ -65,7 +66,7 @@ def filterFind():
             sql += " or "
         sql += "StateProvince like ?"
         params.append("%" + filter + "%")
-    sql = "select * from EmployeeList where " + sql
+    sql = "select * from EmployeeList where " + sql 
     print(sql)
     print(params)
     cur.execute(sql,params)
@@ -91,7 +92,6 @@ def studentAddDetails():
             cur = conn.cursor()
             cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'BusinessUnit', 'StateProvince')\
 						VALUES (?,?,?,?)", (firstName, lastName, businessunit, state))
-
             conn.commit()
             msg = "Record successfully added"
         except:
@@ -101,6 +101,12 @@ def studentAddDetails():
             conn.close()
             return msg
 
+
+@app.route("/ImportEmployees", methods=['POST'])
+def importEmployees():
+    fileitem = request.files['filename']
+    return render_template('EmployeeFilter.html')
+        
 
 @app.route("/Employee/Search", methods=['GET', 'POST'])
 def surnameSearch():

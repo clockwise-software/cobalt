@@ -1,5 +1,5 @@
 {
     "python.diagnostics.sourceMapsEnabled": true,
     "editor.detectIndentation": true,
-    "editor.autoSave": "on"
+    "editor.autoSave": "off"
 }
