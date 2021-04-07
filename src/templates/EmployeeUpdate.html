@@ -22,8 +22,6 @@
     <label>Registered Licenses:<input type="text" name="licenses" value="{{data[9]}}"><br></label>
     <label>Skills:<input type="text" name="skills" value="{{data[10]}}"><br></label>
     <label>Skill Level:<input type="text" name="skillLevel" value="{{data[11]}}"><br></label>
-    <label>Latitude:<input type="text" name="lat" value="{{data[12]}}"><br></label>
-    <label>Longitude:<input type="text" name="longi" value="{{data[13]}}"><br></label>
     <label>Is Available?:<input type="text" name="isAvailable" value="{{data[14]}}"><br></label>
 
     <button type="submit"> submit </button>
@@ -43,10 +41,8 @@
         var licenses = document.forms["myForm"]["licenses"].value;
         var skills = document.forms["myForm"]["skills"].value;
         var skillLevel = document.forms["myForm"]["skillLevel"].value;
-        var lat = document.forms["myForm"]["lat"].value;
-        var longi = document.forms["myForm"]["longi"].value;
         var isAvailable = document.forms["myForm"]["isAvailable"].value;
-        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&lat=' + lat + '&longi=' + longi + '&isAvailable=' + isAvailable;
+        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&isAvailable=' + isAvailable;
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
