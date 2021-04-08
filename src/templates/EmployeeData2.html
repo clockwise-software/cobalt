@@ -1,0 +1,70 @@
+{%extends 'generalPageStyledLeftColumn.html'%}
+
+
+{%block mainBlock%}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Admin Interface</h1>
+        <p class="lead">From this page you can edit, add, and delete all employees.</p>
+    </div>
+</div>
+
+<div class="content mt-4">
+    <table class="table table-striped data-table">
+        <thead>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Business Unit</td>
+            <td>City</td>
+            <td>State</td>
+            <td>Title</td>
+            <td>Licenses</td>
+            <td>Skill</td>
+            <td>Skill Level</td>
+            <td>Options: </td>
+        </thead>
+
+
+        <!-- A List of tuples so row is each item in the list
+            and then the index is the column number.-->
+        {% for employee in employeeList %}
+        <tr>
+
+            <td>{{employee['FirstName']}}</td>
+            <td>{{employee['LastName']}}</td>
+            <td>{{employee['BusinessUnit']}}</td>
+            <td>{{employee['City']}}</td>
+            <td>{{employee['StateProvince']}}</td>
+            <td>{{employee['CareerMatrixTitle']}}</td>
+            <td>{{employee['RegisteredLicenses']}}</td>
+            <td>{{employee['Skill']}}</td>
+            <td>{{employee['SkillLevel']}}</td>
+
+            <td class="align-middle">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee'">Edit</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/DeleteEmployee'">Delete</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+<script>
+    function editFunc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
+        return false;
+    }
+  
+    function delFunc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/Employee/DeleteEmployee', true); // true is asynchronous
+        return false;
+    }
+
+</script>
+
+{%endblock%}

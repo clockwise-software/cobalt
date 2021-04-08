@@ -12,7 +12,6 @@
         <td>Licenses</td>
         <td>Skill</td>
         <td>Skill Level</td>
-        <td>State</td>
     </thead>
 
     {% for employee in employeeList %}
@@ -28,7 +27,6 @@
             <td>{{employee['RegisteredLicenses']}}</td>
             <td>{{employee['Skill']}}</td>
             <td>{{employee['SkillLevel']}}</td>
-            <td>{{employee['StateProvince']}}</td>
         </tr>
     {% endfor %}
     </table>

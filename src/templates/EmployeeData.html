@@ -1,26 +1,115 @@
-{%extends 'generalPageStyled.html'%}
-
+{%extends 'generalPageStyledLeftColumn.html'%}
 
 {%block mainBlock%}
-<h2>Add Employee Data</h2>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Add New Employee</h1>
+        <p class="lead">Add a new employee to the database.</p>
+    </div>
+</div>
 
 <form id='myForm' onsubmit="return loadName()">
-  <label>First name:<input type = "text" name = "firstName"><br></label>
-  <label>Last Name:<input type = "text" name = "lastName"><br></label>
-  <label>Business Unit:<input type = "text" name = "bu"><br></label>
-  <label>State:<input type = "text" name = "state"><br></label>
-
-  <button type = "submit"> submit </button>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>First Name</label>
+      <input type="text" name="firstName" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Last Name</label>
+      <input type="text" name="lastName" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Job Status</label>
+      <select class="custom-select" name="jobStatus">
+        <option selected>Choose a status</option>
+        <option>Full-Time</option>
+        <option>3/4-Time</option>
+        <option>Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Business Unit</label>
+      <input type="text" name="businessUnit" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>City</label>
+      <select class="custom-select" name="city">
+        <option selected>Choose a city</option>
+        <option>Santa Clara</option>
+        <option>Fresno</option>
+        <option>Laramie</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>State/Province</label>
+      <input type="text" name="state" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Career Title</label>
+      <input type="text" name="careerTitle" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Total Years</label>
+      <input type="text" name="totalYears" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>License</label>
+      <select class="custom-select" name="licenses">
+        <option selected>Choose a license</option>
+        <option>GISP</option>
+        <option>PE</option>
+        <option>EIT</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill</label>
+      <select class="custom-select" name="skills">
+        <option selected>Choose a skill</option>
+        <option>Remediation</option>
+        <option>Geologists</option>
+        <option>Stack Sampling</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill Level</label>
+      <input type="text" name="skillLevel" class="form-control">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="isAvailable">
+      <label class="form-check-label" for="isAvailable">Is Available?</label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<br><br><br><br><br><br>
+ 
 <span id='txt'></span>
 
 <script>
   function loadName() {
     var firstName = document.forms["myForm"]["firstName"].value;
     var lastName = document.forms["myForm"]["lastName"].value;
-    var businessunit = document.forms["myForm"]["bu"].value;
+    var jobStatus = document.forms["myForm"]["jobStatus"].value;
+    var businessUnit = document.forms["myForm"]["businessUnit"].value;
+    var city = document.forms["myForm"]["city"].value;
     var state = document.forms["myForm"]["state"].value;
-    params = 'firstName='+firstName+'&lastName='+lastName+'&bu='+businessunit+'&state='+state;
+    var careerTitle = document.forms["myForm"]["careerTitle"].value;
+    var totalYears = document.forms["myForm"]["totalYears"].value;
+    var licenses = document.forms["myForm"]["licenses"].value;
+    var skills = document.forms["myForm"]["skills"].value;
+    var skillLevel = document.forms["myForm"]["skillLevel"].value;
+    var isAvailable = document.forms["myForm"]["isAvailable"].value;
+    params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&isAvailable=' + isAvailable;
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/Employee/AddEmployee', true); // true is asynchronous
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

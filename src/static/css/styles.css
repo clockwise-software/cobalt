@@ -45,3 +45,14 @@ code {
 #pageContent{
     padding: 10px;
 }
+
+.card-header:hover{
+    background-color: #829825;
+    color: white;
+    text-decoration: none;
+}
+
+.card-header{
+    color: black;
+}
+
