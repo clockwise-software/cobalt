@@ -19,61 +19,69 @@
       <input type="text" name="lastName" class="form-control">
     </div>
   </div>
-  <label>Job Status</label>
-  <div class="form-group">
-    <select class="custom-select">
-      <option selected>Choose a status</option>
-      <option value="1">Full-Time</option>
-      <option value="2">3/4-Time</option>
-      <option value="3">Part-Time</option>
-    </select>
-  </div>  
-  <div class="form-group">
-    <label>Business Unit</label>
-    <input type="text" name="businessUnit" class="form-control">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Job Status</label>
+      <select class="custom-select">
+        <option selected>Choose a status</option>
+        <option value="1">Full-Time</option>
+        <option value="2">3/4-Time</option>
+        <option value="3">Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Business Unit</label>
+      <input type="text" name="businessUnit" class="form-control">
+    </div>
   </div>
-  <label>City</label>
-  <div class="form-group"> 
-    <select class="custom-select">
-      <option selected>Choose a city</option>
-      <option value="1">Full-Time</option>
-      <option value="2">3/4-Time</option>
-      <option value="3">Part-Time</option>
-    </select>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>City</label>
+      <select class="custom-select">
+        <option selected>Choose a city</option>
+        <option value="1">Full-Time</option>
+        <option value="2">3/4-Time</option>
+        <option value="3">Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>State</label>
+      <input type="text" name="state" class="form-control">
+    </div>
   </div>
-  <div class="form-group">
-    <label>State</label>
-    <input type="text" name="state" class="form-control">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Career Title</label>
+      <input type="text" name="careerTitle" class="form-control">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Total Years</label>
+      <input type="text" name="totalYears" class="form-control">
+    </div>
   </div>
-  <div class="form-group">
-    <label>Career Title</label>
-    <input type="text" name="careerTitle" class="form-control">
-  </div>
-  <div class="form-group">
-    <label>Total Years</label>
-    <input type="text" name="totalYears" class="form-control">
-  </div>
-  <label>License</label>
-  <div class="form-group"> 
-    <select class="custom-select">
-      <option selected>Choose a license</option>
-      <option value="1">Full-Time</option>
-      <option value="2">3/4-Time</option>
-      <option value="3">Part-Time</option>
-    </select>
-  </div>
-  <label>Skill</label>
-  <div class="form-group"> 
-    <select class="custom-select">
-      <option selected>Choose a skill</option>
-      <option value="1">Full-Time</option>
-      <option value="2">3/4-Time</option>
-      <option value="3">Part-Time</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label>Skill Level</label>
-    <input type="text" name="skillLevel" class="form-control">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>License</label>
+      <select class="custom-select">
+        <option selected>Choose a license</option>
+        <option value="1">Full-Time</option>
+        <option value="2">3/4-Time</option>
+        <option value="3">Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill</label>
+      <select class="custom-select">
+        <option selected>Choose a skill</option>
+        <option value="1">Full-Time</option>
+        <option value="2">3/4-Time</option>
+        <option value="3">Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill Level</label>
+      <input type="text" name="skillLevel" class="form-control">
+    </div>
   </div>
   <div class="form-group">
     <div class="form-check">
@@ -85,23 +93,24 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<br><br><br><br><br><br>
+ 
+<!-- <form id='myForm' onsubmit="return loadName()"> -->
+<!--     <label>First Name:<input type="text" name="firstName"><br></label>-->
+ <!--    <label>Last Name:<input type="text" name="lastName"><br></label>-->
+ <!--    <label>Job Status:<input type="text" name="jobStatus"><br></label>-->
+ <!--    <label>Business Unit:<input type="text" name="businessUnit"><br></label>-->
+ <!--  <label>City:<input type="text" name="city"><br></label>-->
+ <!--   <label>State/Province:<input type="text" name="state"><br></label>-->
+ <!--    <label>Career Title:<input type="text" name="careerTitle"><br></label>-->
+  <!--  <label>Total Years:<input type="text" name="totalYears"><br></label>-->
+  <!--  <label>Registered Licenses:<input type="text" name="licenses"><br></label>-->
+  <!--   <label>Skills:<input type="text" name="skills"><br></label>-->
+  <!--   <label>Skill Level:<input type="text" name="skillLevel"><br></label>-->
+  <!--   <label>Is Available?:<input type="text" name="isAvailable"><br></label>-->
 
-<form id='myForm' onsubmit="return loadName()">
-    <label>First Name:<input type="text" name="firstName"><br></label>
-    <label>Last Name:<input type="text" name="lastName"><br></label>
-    <label>Job Status:<input type="text" name="jobStatus"><br></label>
-    <label>Business Unit:<input type="text" name="businessUnit"><br></label>
-    <label>City:<input type="text" name="city"><br></label>
-    <label>State/Province:<input type="text" name="state"><br></label>
-    <label>Career Title:<input type="text" name="careerTitle"><br></label>
-    <label>Total Years:<input type="text" name="totalYears"><br></label>
-    <label>Registered Licenses:<input type="text" name="licenses"><br></label>
-    <label>Skills:<input type="text" name="skills"><br></label>
-    <label>Skill Level:<input type="text" name="skillLevel"><br></label>
-    <label>Is Available?:<input type="text" name="isAvailable"><br></label>
-
-  <button type = "submit"> submit </button>
-</form>
+ <!--  <button type = "submit"> submit </button>-->
+<!-- </form>-->
 <span id='txt'></span>
 
 <script>
