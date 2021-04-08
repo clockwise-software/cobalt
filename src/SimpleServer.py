@@ -108,7 +108,7 @@ def studentAddDetails():
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
             cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'JobStatus', 'BusinessUnit', 'City', 'StateProvince', 'CareerMatrixTitle', \
-						'TotalYears', 'RegisteredLicenses', 'Skill', 'SkillLevel', 'IsAvailable') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)\
+						'TotalYears', 'RegisteredLicenses', 'Skill', 'SkillLevel', 'IsAvailable') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)\
                         ", (firstName, lastName, jobStatus, businessUnit, city, state, careerTitle, totalYears, licenses, skills, skillLevel, isAvailable))
 
             conn.commit()
