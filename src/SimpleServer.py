@@ -7,6 +7,7 @@ from flask import Flask, redirect, request, render_template, jsonify, make_respo
 import sqlite3
 import DBUtils
 import csv
+import io
 
 DATABASE = 'employee.db'
 
@@ -104,8 +105,29 @@ def studentAddDetails():
 
 @app.route("/ImportEmployees", methods=['POST'])
 def importEmployees():
+    #fileitem = request.form['filename']
     fileitem = request.files['filename']
-    return render_template('EmployeeFilter.html')
+    if fileitem.filename:
+        # strip the leading path from the file name
+        csv_bytes = fileitem.read()
+        csv_string = csv_bytes.decode("utf-8")
+        new_entries = csv.reader(csv_string.splitlines()[1:])
+        print(new_entries)
+        try:
+            conn = sqlite3.connect(DATABASE)
+            cur = conn.cursor()
+            cur.executemany("INSERT INTO EmployeeList ('FirstName','LastName','JobStatus','BusinessUnit','City','StateProvince','CareerMatrixTitle','TotalYears','RegisteredLicenses','Skill','SkillLevel','Lat','Long','IsAvailable') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", new_entries)
+            conn.commit()
+            print("Records successfully added")
+        except:
+            conn.rollback()
+            print("error in import operation")
+        finally:
+            conn.close()
+            return render_template('EmployeeFilter.html')
+    else:
+        print("No File given")
+        return render_template('EmployeeData.html')
         
 
 @app.route("/Employee/Search", methods=['GET', 'POST'])
