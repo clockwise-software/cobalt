@@ -19,40 +19,71 @@
       <input type="text" name="lastName" class="form-control">
     </div>
   </div>
+  <label>Job Status</label>
   <div class="form-group">
-    <label for="inputAddress">Address</label>
-    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+    <select class="custom-select">
+      <option selected>Choose a status</option>
+      <option value="1">Full-Time</option>
+      <option value="2">3/4-Time</option>
+      <option value="3">Part-Time</option>
+    </select>
+  </div>  
+  <div class="form-group">
+    <label>Business Unit</label>
+    <input type="text" name="businessUnit" class="form-control">
+  </div>
+  <label>City</label>
+  <div class="form-group"> 
+    <select class="custom-select">
+      <option selected>Choose a city</option>
+      <option value="1">Full-Time</option>
+      <option value="2">3/4-Time</option>
+      <option value="3">Part-Time</option>
+    </select>
   </div>
   <div class="form-group">
-    <label for="inputAddress2">Address 2</label>
-    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+    <label>State</label>
+    <input type="text" name="state" class="form-control">
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
-    </div>
-    <div class="form-group col-md-2">
-      <label for="inputZip">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
-    </div>
+  <div class="form-group">
+    <label>Career Title</label>
+    <input type="text" name="careerTitle" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Total Years</label>
+    <input type="text" name="totalYears" class="form-control">
+  </div>
+  <label>License</label>
+  <div class="form-group"> 
+    <select class="custom-select">
+      <option selected>Choose a license</option>
+      <option value="1">Full-Time</option>
+      <option value="2">3/4-Time</option>
+      <option value="3">Part-Time</option>
+    </select>
+  </div>
+  <label>Skill</label>
+  <div class="form-group"> 
+    <select class="custom-select">
+      <option selected>Choose a skill</option>
+      <option value="1">Full-Time</option>
+      <option value="2">3/4-Time</option>
+      <option value="3">Part-Time</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Skill Level</label>
+    <input type="text" name="skillLevel" class="form-control">
   </div>
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        Check me out
+      <input class="form-check-input" type="checkbox">
+      <label class="form-check-label">
+      Is Available?
       </label>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Sign in</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 <form id='myForm' onsubmit="return loadName()">
