@@ -42,8 +42,8 @@
 
             <td class="align-middle">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary">Edit</button>
-                    <button type="button" class="btn btn-secondary">Delete</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee'">Edit</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/DeleteEmployee'">Delete</button>
                 </div>
             </td>
         </tr>
@@ -51,5 +51,20 @@
 
     </table>
 </div>
+
+<script>
+    function editFunc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
+        return false;
+    }
+  
+    function delFunc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/Employee/DeleteEmployee', true); // true is asynchronous
+        return false;
+    }
+
+</script>
 
 {%endblock%}

@@ -211,7 +211,7 @@ def studentDeleteDetails():
             cur.execute("DELETE FROM 'EmployeeList' WHERE FirstName=? AND LastName=?", (firstName, lastName))
 
             conn.commit()
-            msg = "Record successfully deleted" #the deletion works but this doesn't print on the webpage, not sure why
+            msg = "Record successfully deleted" 
         except:
             conn.rollback()
             msg = "error in delete operation"
