@@ -46,31 +46,44 @@ def filterFind():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     sql = ''
-    params = []
-    for filter in filter1:
-        if (sql != ''):
-            sql += " or "
-        sql += "RegisteredLicenses like ?"
-        params.append("%" + filter + "%")
-    for filter in filter2:
-        if (sql != ''):
-            sql += " or "
-        sql += "skill like ?"
-        params.append("%" + filter + "%")
-    for filter in filter3:
-        if (sql != ''):
-            sql += " or "
-        sql += "skillLevel like ?"
-        params.append("%" + filter + "%")
-    for filter in filter4:
-        if (sql != ''):
-            sql += " or "
-        sql += "StateProvince like ?"
-        params.append("%" + filter + "%")
+    #params = []
+    f1 = "(" + (" or ").join([f"RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
+    f2 = "(" + (" or ").join([f"skill like '%{f}%'" for f in filter2]) + ")"
+    f3 = "(" + (" or ").join([f"skillLevel like '%{f}%'" for f in filter3]) + ")"
+    f4 = "(" + (" or ").join([f"StateProvince like '%{f}%'" for f in filter4]) + ")"
+    f_strings = []
+    if len(f1) > 2: f_strings.append(f1)
+    if len(f2) > 2: f_strings.append(f2)
+    if len(f3) > 2: f_strings.append(f3)
+    if len(f4) > 2: f_strings.append(f4)
+    print("FILTERS:", f_strings)
+    sql = (" and ").join(f_strings)
+    
+    # for filter in filter1:
+    #     if (sql != ''):
+    #         sql += " or "
+    #     sql += "RegisteredLicenses like ?"
+    #     params.append("%" + filter + "%")
+    # for filter in filter2:
+    #     if (sql != ''):
+    #         sql += " or "
+    #     sql += "skill like ?"
+    #     params.append("%" + filter + "%")
+    # for filter in filter3:
+    #     if (sql != ''):
+    #         sql += " or "
+    #     sql += "skillLevel like ?"
+    #     params.append("%" + filter + "%")
+    # for filter in filter4:
+    #     if (sql != ''):
+    #         sql += " or "
+    #     sql += "StateProvince like ?"
+    #     params.append("%" + filter + "%")
     sql = "select * from EmployeeList where " + sql 
     print(sql)
-    print(params)
-    cur.execute(sql,params)
+    #print(params)
+    #cur.execute(sql,params)
+    cur.execute(sql)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
     print(employeeList)
