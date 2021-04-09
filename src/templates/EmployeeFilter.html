@@ -98,19 +98,12 @@
             </div>
             <div class="tab-pane fade" id="map" role="map" aria-labelledby="profile-tab">
                 <p>Map goes here</p>
-                <div id="gmap"></div>
+                <div id="lmap"></div>
                 <style type="text/css">
-                    /* Set the size of the div element that contains the map */
-                    #gmap {
-                    height: 400px;
-                    /* The height is 400 pixels */
-                    width: 100%;
-                    /* The width is the width of the web page */
-                }
+                    #lmap {
+                         height: 400px; 
+                    }
                 </style>
-                <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6NvWQM2PeO3d6krxckoJEAPJaj9ErH1U&callback=initMap">
-</script>
             </div>
         </div>
     </div>
@@ -171,41 +164,45 @@
     });
 
     var mapInitialized = false;
-    var geocoder;
-    var map;
     var locationToLatLong = new Map();
     var markers = new Array();
 
+    var map;
+
+    initMap();
+
     function initMap() {
         populateHashmap(); // TODO read from an external file of some sort
-        geocoder = new google.maps.Geocoder();
-        console.log(geocoder);
         const wyo = { lat: 41.3114, lng: -105.5911 };
         // The map, centered at Laramie
-        map = new google.maps.Map(document.getElementById("gmap"), {
-            zoom: 4,
-            center: wyo,
-        });
+        map = L.map('lmap').setView([wyo.lat, wyo.lng], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiYmV0aGFueW1hZXR3IiwiYSI6ImNrbmFxYmFpNTBsemMybm5zZXlrdWZ4czAifQ.tomg5q_AbRkCckG4wLqmrQ'
+        }).addTo(map);
         mapInitialized = true;
     }
 
     // preseed some locations to prevent hammering the Geocode api
     // ideally load these values from a database
     function populateHashmap() {
-        locationToLatLong.set("laramie, wyoming", new google.maps.LatLng(41.3114, -105.5911));
-        locationToLatLong.set("casper, wyoming", new google.maps.LatLng(42.8501, -106.3252));
-        locationToLatLong.set("sheridan, wyoming", new google.maps.LatLng(44.7972, -106.9562));
-        locationToLatLong.set("jackson, wyoming", new google.maps.LatLng(43.4799 -110.7624));
-        locationToLatLong.set("cheyenne, wyoming", new google.maps.LatLng(41.1400, -104.8202));
-        locationToLatLong.set("lander, wyoming", new google.maps.LatLng(42.8330, -108.7307));
-        locationToLatLong.set("fort collins, colorado", new google.maps.LatLng(40.5853, -105.0844));
-        locationToLatLong.set("boulder, colorado", new google.maps.LatLng(40.0150, -105.2705));
-        locationToLatLong.set("santa clara, california", new google.maps.LatLng(37.3541, -121.9552));
-        locationToLatLong.set("monterey, california", new google.maps.LatLng(36.6002, -121.8947));
-        locationToLatLong.set("fresno, california", new google.maps.LatLng(36.7378, -119.7871));
-        locationToLatLong.set("helena, montana", new google.maps.LatLng(46.5891, -112.0391));
-        locationToLatLong.set("chicago, illinois", new google.maps.LatLng(41.8781, -87.6298));
-
+        locationToLatLong.set("laramie, wyoming", {lat: 41.3114, lng: -105.5911});
+        locationToLatLong.set("casper, wyoming", {lat: 42.8501, lng: -106.3252});
+        locationToLatLong.set("sheridan, wyoming", {lat: 44.7972, lng: -106.9562});
+        locationToLatLong.set("jackson, wyoming", {lat: 43.4799, lng: -110.7624});
+        locationToLatLong.set("cheyenne, wyoming", {lat: 41.1400, lng: -104.8202});
+        locationToLatLong.set("lander, wyoming", {lat: 42.8330, lng: -108.7307});
+        locationToLatLong.set("fort collins, colorado", {lat: 40.5853, lng: -105.0844});
+        locationToLatLong.set("boulder, colorado", {lat: 40.0150, lng: -105.2705});
+        locationToLatLong.set("santa clara, california", {lat: 37.3541, lng: -121.9552});
+        locationToLatLong.set("monterey, california", {lat: 36.6002, lng: -121.8947});
+        locationToLatLong.set("fresno, california", {lat: 36.7378, lng: -119.7871});
+        locationToLatLong.set("helena, montana", {lat: 46.5891, lng: -112.0391});
+        locationToLatLong.set("chicago, illinois", {lat: 41.8781, lng: -87.6298});
     }
 
     function parseRows() {
@@ -225,7 +222,7 @@
     function removePreviousMarkers() {
         for (var t = 0; t < markers.length; t++) {
             var marker = markers[t];
-            marker.setMap(null); // hide markers
+            map.removeLayer(marker);
         }
         markers = new Array(); // and delete markers by removing the references to them
     }
@@ -234,7 +231,8 @@
         var employeeLocation = city + ", " + state;
         var latLong = locationToLatLong.get(employeeLocation.toLowerCase());
         if (latLong == undefined) {
-            codeAddress(employeeLocation, name); // will find location here and add it to the table
+            lookupAddress(); // is a stub
+            //need to get from database.  not using Google stuff anymore
         }
         else {
             addMarker(latLong, name);
@@ -242,26 +240,17 @@
     }
     
     function codeAddress(address, name) {
-        geocoder.geocode( { 'address': address}, function(results, status) {
-            if (status == 'OK') {
-                map.setCenter(results[0].geometry.location);
-                addMarker(results[0].geometry.location), name;
-                // add location to hashmap for later lookup without querying the api
-                locationToLatLong.set(address.toLowerCase(), results[0].geometry.location);
-            } 
-            else {
-                // alert('Geocode was not successful for the following reason: ' + status);
-                // don't care
-            }
-        });
+        if (true) return; // create this function
+        var result;
+        locationToLatLong.set(address.toLowerCase(), result);
+        addMarker(result);
     }
 
     function addMarker(location, name) {
-        var marker = new google.maps.Marker({
-            map: map,
-            position: location,
-            title: name
-        });
+        var marker = L.marker([location.lat, location.lng],
+            {title: name}
+        ).addTo(map);
+        //marker.bindPopup("<b>" + name + "</b>").openPopup();
         // TODO if we had employee pictures we could set the marker icon
         // to that picture
         markers.push(marker);
