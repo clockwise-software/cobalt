@@ -1,5 +1,7 @@
 <div class="content mt-4">
-    <table class="table table-striped data-table">
+    <button type="button" download="Data.csv" onclick="ExportEmployees()">Export Data</button>
+
+    <table id="EmployeeTable" class="table table-striped data-table">
     <thead>
         <td>First Name</td>
         <td>Last Name</td>
@@ -29,3 +31,46 @@
     {% endfor %}
     </table>
 </div>
+
+<script>
+    function ExportEmployees(){
+        //src: https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
+        // const rows = [
+        //     ["name1", "city1", "some other info"],
+        //     ["name2", "city2", "more info"]
+        // ];
+        var CSV_Rows = [];
+        var OurTable = document.getElementById("EmployeeTable");
+        var TableRows = OurTable.getElementsByTagName('tr');
+        for (var i = 0; i < TableRows.length; i++) {
+            var RowData = TableRows[i].getElementsByTagName('td');
+            var RowDataArray = [];
+            for(var j=0;j<RowData.length;j++){
+                RowDataArray.push('"'+RowData[j].innerText+'"');
+            }
+            CSV_Rows.push(RowDataArray);
+        }
+
+        console.log('Found '+CSV_Rows.length+' rows of data in the table');
+        console.log(CSV_Rows);
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        CSV_Rows.forEach(function(rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        // var encodedUri = encodeURI(csvContent);
+        // console.log(encodedUri);
+        // window.open(encodedUri);
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "EmployeeData.csv");
+        document.body.appendChild(link); // Required for FF
+
+        link.click(); // This will download the data file named "my_data.csv".
+
+    }
+</script>
