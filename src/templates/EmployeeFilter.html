@@ -212,10 +212,12 @@
         if (!mapInitialized) return;
         removePreviousMarkers();
         $( ".even,.odd" ).each(function() {
+            var firstName = $(this).find("td").eq(0).html();
+            var lastName = $(this).find("td").eq(1).html();
             var city = $(this).find("td").eq(3).html();  
             var state = $(this).find("td").eq(4).html();  
             if (city != undefined && state != undefined) {
-                createMarker(city, state);
+                createMarker(city, state, firstName + " " + lastName);
             }
         });
     }
@@ -223,27 +225,27 @@
     function removePreviousMarkers() {
         for (var t = 0; t < markers.length; t++) {
             var marker = markers[t];
-            marker.setMap(null);
+            marker.setMap(null); // hide markers
         }
-        markers = new Array();
+        markers = new Array(); // and delete markers by removing the references to them
     }
 
-    function createMarker(city, state) {
+    function createMarker(city, state, name) {
         var employeeLocation = city + ", " + state;
         var latLong = locationToLatLong.get(employeeLocation.toLowerCase());
         if (latLong == undefined) {
-            codeAddress(employeeLocation); // will find location here and add it to the table
+            codeAddress(employeeLocation, name); // will find location here and add it to the table
         }
         else {
-            addMarker(latLong);
+            addMarker(latLong, name);
         }
     }
     
-    function codeAddress(address) {
+    function codeAddress(address, name) {
         geocoder.geocode( { 'address': address}, function(results, status) {
             if (status == 'OK') {
                 map.setCenter(results[0].geometry.location);
-                addMarker(results[0].geometry.location);
+                addMarker(results[0].geometry.location), name;
                 // add location to hashmap for later lookup without querying the api
                 locationToLatLong.set(address.toLowerCase(), results[0].geometry.location);
             } 
@@ -254,10 +256,11 @@
         });
     }
 
-    function addMarker(location) {
+    function addMarker(location, name) {
         var marker = new google.maps.Marker({
             map: map,
-            position: location
+            position: location,
+            title: name
         });
         markers.push(marker);
     }
