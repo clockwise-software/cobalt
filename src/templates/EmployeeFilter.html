@@ -97,7 +97,6 @@
                 <p>Table goes here</p>
             </div>
             <div class="tab-pane fade" id="map" role="map" aria-labelledby="profile-tab">
-                <p>Map goes here</p>
                 <div id="lmap"></div>
                 <style type="text/css">
                     #lmap {
@@ -175,14 +174,14 @@
         populateHashmap(); // TODO read from an external file of some sort
         const wyo = { lat: 41.3114, lng: -105.5911 };
         // The map, centered at Laramie
-        map = L.map('lmap').setView([wyo.lat, wyo.lng], 13);
+        map = L.map('lmap').setView([wyo.lat, wyo.lng], 5);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,
             id: 'mapbox/streets-v11',
             tileSize: 512,
             zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiYmV0aGFueW1hZXR3IiwiYSI6ImNrbmFxYmFpNTBsemMybm5zZXlrdWZ4czAifQ.tomg5q_AbRkCckG4wLqmrQ'
+            accessToken: 'pk.eyJ1IjoiYmV0aGFueW1hZXR3IiwiYSI6ImNrbmFxcmk5ZjFrODYycW4xeTU5anhoY2oifQ.FOS2abK6UM4wKEaupspEig'
         }).addTo(map);
         mapInitialized = true;
     }
@@ -217,6 +216,16 @@
                 createMarker(city, state, firstName + " " + lastName);
             }
         });
+        centerMap();
+    }
+
+    function centerMap() {
+        var latLngs = [];
+        for (var t = 0; t < markers.length; t++) {
+            latLngs.push(markers[t].getLatLng())
+        }
+        var markerBounds = L.latLngBounds(latLngs);
+        map.fitBounds(markerBounds);
     }
 
     function removePreviousMarkers() {
