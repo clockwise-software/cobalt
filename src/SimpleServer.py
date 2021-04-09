@@ -6,6 +6,8 @@ import os
 from flask import Flask, redirect, request, render_template, jsonify, make_response
 import sqlite3
 import DBUtils
+import csv
+import io
 
 DATABASE = 'employee.db'
 
@@ -64,7 +66,8 @@ def filterFind():
         if (sql != ''):
             sql += " or "
         sql += "StateProvince like ?"
-    sql = "select * from EmployeeList where " + sql
+        params.append("%" + filter + "%")
+    sql = "select * from EmployeeList where " + sql 
     print(sql)
     print(params)
     cur.execute(sql,params)
@@ -75,7 +78,7 @@ def filterFind():
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
 
-@app.route("/Test")
+@app.route("/AdminView")
 def test():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
@@ -93,14 +96,23 @@ def studentAddDetails():
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
-        businessunit = request.form.get('bu', default="Error")
+        jobStatus = request.form.get('jobStatus', default="Error")
+        businessUnit = request.form.get('businessUnit', default="Error")
+        city = request.form.get('city', default="Error")
         state = request.form.get('state', default="Error")
+        careerTitle = request.form.get('careerTitle', default="Error")
+        totalYears = request.form.get('totalYears', default="Error")
+        licenses = request.form.get('licenses', default="Error")
+        skills = request.form.get('skills', default="Error")
+        skillLevel = request.form.get('skillLevel', default="Error")
+        isAvailable = request.form.get('isAvailable', default="Error")
         print("inserting employee"+firstName)
         try:
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
-            cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'BusinessUnit', 'StateProvince')\
-						VALUES (?,?,?,?)", (firstName, lastName, businessunit, state))
+            cur.execute("INSERT INTO EmployeeList ('FirstName', 'LastName', 'JobStatus', 'BusinessUnit', 'City', 'StateProvince', 'CareerMatrixTitle', \
+						'TotalYears', 'RegisteredLicenses', 'Skill', 'SkillLevel', 'IsAvailable') VALUES (?,?,?,?,?,?,?,?,?,?,?,?)\
+                        ", (firstName, lastName, jobStatus, businessUnit, city, state, careerTitle, totalYears, licenses, skills, skillLevel, isAvailable))
 
             conn.commit()
             msg = "Record successfully added"
@@ -111,6 +123,33 @@ def studentAddDetails():
             conn.close()
             return msg
 
+
+@app.route("/ImportEmployees", methods=['POST'])
+def importEmployees():
+    #fileitem = request.form['filename']
+    fileitem = request.files['filename']
+    if fileitem.filename:
+        # strip the leading path from the file name
+        csv_bytes = fileitem.read()
+        csv_string = csv_bytes.decode("utf-8")
+        new_entries = csv.reader(csv_string.splitlines()[1:])
+        print(new_entries)
+        try:
+            conn = sqlite3.connect(DATABASE)
+            cur = conn.cursor()
+            cur.executemany("INSERT INTO EmployeeList ('FirstName','LastName','JobStatus','BusinessUnit','City','StateProvince','CareerMatrixTitle','TotalYears','RegisteredLicenses','Skill','SkillLevel','Lat','Long','IsAvailable') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", new_entries)
+            conn.commit()
+            print("Records successfully added")
+        except:
+            conn.rollback()
+            print("error in import operation")
+        finally:
+            conn.close()
+            return render_template('EmployeeFilter.html')
+    else:
+        print("No File given")
+        return render_template('EmployeeData.html')
+        
 
 @app.route("/Employee/Search", methods=['GET', 'POST'])
 def surnameSearch():
@@ -169,8 +208,6 @@ def studentUpdateDetails():
         licenses = request.form.get('licenses', default="Error")
         skills = request.form.get('skills', default="Error")
         skillLevel = request.form.get('skillLevel', default="Error")
-        lat = request.form.get('lat', default="Error")
-        longi = request.form.get('longi', default="Error")
         isAvailable = request.form.get('isAvailable', default="Error")
         print("updating employee"+firstName)
         try:
@@ -178,8 +215,8 @@ def studentUpdateDetails():
             cur = conn.cursor()
             cur.execute("UPDATE 'EmployeeList' SET 'FirstName'=?, 'LastName'=?, 'JobStatus'=?, 'BusinessUnit'=?,\
                 'City'=?, 'StateProvince'=?, 'CareerMatrixTitle'=?, 'TotalYears'=?, 'RegisteredLicenses'=?,\
-                    'Skill'=?, 'SkillLevel'=?, 'Lat'=?, 'Long'=?, 'IsAvailable'=? WHERE Id=?\
-                        ", (firstName, lastName, jobStatus, businessUnit, city, state, careerTitle, totalYears, licenses, skills, skillLevel, lat, longi, isAvailable, xid))
+                    'Skill'=?, 'SkillLevel'=?, 'IsAvailable'=? WHERE Id=?\
+                        ", (firstName, lastName, jobStatus, businessUnit, city, state, careerTitle, totalYears, licenses, skills, skillLevel, isAvailable, xid))
 
             conn.commit()
             msg = "Record successfully updated"
@@ -204,36 +241,13 @@ def studentDeleteDetails():
             cur.execute("DELETE FROM 'EmployeeList' WHERE FirstName=? AND LastName=?", (firstName, lastName))
 
             conn.commit()
-            msg = "Record successfully deleted" #the deletion works but this doesn't print on the webpage, not sure why
+            msg = "Record successfully deleted" 
         except:
             conn.rollback()
             msg = "error in delete operation"
         finally:
             conn.close()
             return msg
-
-
-# The name says it...
-# @app.route("/Employee/VulnerableSearch", methods = ['GET','POST'])
-# def surnameInjectionSearch():
-#	if request.method =='GET':
-#		return render_template('EmployeeSQLInjection.html')
-#	if request.method =='POST':
-#		lastName = request.form.get('lastName', default="Error") #rem: args for get form for post
-#		conn = sqlite3.connect(DATABASE)
-#		cur = conn.cursor()
-
-        # VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD
-#		query = "SELECT * FROM EmployeeList WHERE lastname= '%s' " % (lastName,)
-#		print (query)
-#		cur.execute(query)
-        # VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD VERY BAD
-
-#		data = cur.fetchall()
-#		print (data)
-#		print (lastName)
-#		conn.close()
-#		return render_template('Employee.html', data = data)
 
 if __name__ == "__main__":
     app.run(debug=True)
