@@ -56,3 +56,7 @@ code {
     color: black;
 }
 
+#export, #export:hover, #export:active, #export:visited {
+  background-color: #ab5236 !important;
+  border-color: #ab5236;
+}
