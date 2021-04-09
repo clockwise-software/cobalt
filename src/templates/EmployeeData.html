@@ -91,7 +91,7 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<br><br><br><br><br><br>
+<br><br>
  
 <span id='txt'></span>
 
@@ -133,9 +133,9 @@
 <a href="/static/Template.csv" download="Template.csv"><p>Click here for Template File </p></a>
 <form enctype = "multipart/form-data" action = "/ImportEmployees" method = "post">
    <p>Upload File: <input type = "file" name = "filename" /></p>
-   <p><input type = "submit" value = "Upload" /></p>
+   <p><input type = "submit" value = "Upload" class="btn btn-primary" /></p>
 </form>
 
-
+<br><br><br><br>
 
 {%endblock%}
