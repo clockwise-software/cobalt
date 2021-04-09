@@ -163,11 +163,12 @@
         fetchResults('#filterForm', '#employeeList');
 
         // ensure map displays properly once its tab is switched to
+        // kludgey
         $('#profile-tab').click(function (e) {
-            console.log("switched to map");
-            initMap();
             setTimeout(function () {
+                //window.dispatchEvent(new Event('resize'));
                 map.invalidateSize();
+                centerMap();
             }, 1000);
         });
     });
@@ -179,9 +180,9 @@
     var map;
 
     window.addEventListener('load', (event) => {
-        //initMap();
+        initMap();
     });
-
+    
     function initMap() {
         populateHashmap(); // TODO read from an external file of some sort
         const wyo = { lat: 41.3114, lng: -105.5911 };
@@ -235,8 +236,10 @@
         for (var t = 0; t < markers.length; t++) {
             latLngs.push(markers[t].getLatLng())
         }
-        var markerBounds = L.latLngBounds(latLngs);
-        map.fitBounds(markerBounds);
+        if (latLngs.length > 0) {
+            var markerBounds = L.latLngBounds(latLngs);
+            map.fitBounds(markerBounds);
+        }
     }
 
     function removePreviousMarkers() {
@@ -259,7 +262,7 @@
         }
     }
     
-    function codeAddress(address, name) {
+    function lookupAddress(address, name) {
         if (true) return; // create this function
         var result;
         locationToLatLong.set(address.toLowerCase(), result);
