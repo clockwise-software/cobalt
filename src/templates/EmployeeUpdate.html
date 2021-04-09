@@ -1,6 +1,5 @@
 {%extends 'generalPageStyledLeftColumn.html'%}
 
-
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
@@ -10,24 +9,91 @@
 </div>
 
 <form id='myForm' onsubmit="return loadName()">
-    <input type="hidden" name="id" value="{{data[0]}}">
-    <label>First Name:<input type="text" name="firstName" value="{{data[1]}}"><br></label>
-    <label>Last Name:<input type="text" name="lastName" value="{{data[2]}}"><br></label>
-    <label>Job Status:<input type="text" name="jobStatus" value="{{data[3]}}"><br></label>
-    <label>Business Unit:<input type="text" name="businessUnit" value="{{data[4]}}"><br></label>
-    <label>City:<input type="text" name="city" value="{{data[5]}}"><br></label>
-    <label>State/Province:<input type="text" name="state" value="{{data[6]}}"><br></label>
-    <label>Career Title:<input type="text" name="careerTitle" value="{{data[7]}}"><br></label>
-    <label>Total Years:<input type="text" name="totalYears" value="{{data[8]}}"><br></label>
-    <label>Registered Licenses:<input type="text" name="licenses" value="{{data[9]}}"><br></label>
-    <label>Skills:<input type="text" name="skills" value="{{data[10]}}"><br></label>
-    <label>Skill Level:<input type="text" name="skillLevel" value="{{data[11]}}"><br></label>
-    <label>Latitude:<input type="text" name="lat" value="{{data[12]}}"><br></label>
-    <label>Longitude:<input type="text" name="longi" value="{{data[13]}}"><br></label>
-    <label>Is Available?:<input type="text" name="isAvailable" value="{{data[14]}}"><br></label>
-
-    <button type="submit"> submit </button>
+  <input type="hidden" name="id" value="{{data[0]}}">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>First Name</label>
+      <input type="text" name="firstName" class="form-control" value="{{data[1]}}">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Last Name</label>
+      <input type="text" name="lastName" class="form-control" value="{{data[2]}}">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Job Status</label>
+      <select class="custom-select" name="jobStatus" value="{{data[3]}}">
+        <option selected>Choose a status</option>
+        <option>Full-Time</option>
+        <option>3/4-Time</option>
+        <option>Part-Time</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>Business Unit</label>
+      <input type="text" name="businessUnit" class="form-control" value="{{data[4]}}">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>City</label>
+      <select class="custom-select" name="city" value="{{data[5]}}">
+        <option selected>Choose a city</option>
+        <option>Santa Clara</option>
+        <option>Fresno</option>
+        <option>Laramie</option>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label>State/Province</label>
+      <input type="text" name="state" class="form-control" value="{{data[6]}}">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Career Title</label>
+      <input type="text" name="careerTitle" class="form-control" value="{{data[7]}}">
+    </div>
+    <div class="form-group col-md-6">
+      <label>Total Years</label>
+      <input type="text" name="totalYears" class="form-control" value="{{data[8]}}">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>License</label>
+      <select class="custom-select" name="licenses" value="{{data[9]}}">
+        <option selected>Choose a license</option>
+        <option>GISP</option>
+        <option>PE</option>
+        <option>EIT</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill</label>
+      <select class="custom-select" name="skills" value="{{data[10]}}">
+        <option selected>Choose a skill</option>
+        <option>Remediation</option>
+        <option>Geologists</option>
+        <option>Stack Sampling</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label>Skill Level</label>
+      <input type="text" name="skillLevel" class="form-control" value="{{data[11]}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="isAvailable" value="{{data[14]}}">
+      <label class="form-check-label">Is Available?</label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<br><br><br><br><br><br>
+
 <span id='txt'></span>
 
 <script>
@@ -43,10 +109,8 @@
         var licenses = document.forms["myForm"]["licenses"].value;
         var skills = document.forms["myForm"]["skills"].value;
         var skillLevel = document.forms["myForm"]["skillLevel"].value;
-        var lat = document.forms["myForm"]["lat"].value;
-        var longi = document.forms["myForm"]["longi"].value;
         var isAvailable = document.forms["myForm"]["isAvailable"].value;
-        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&lat=' + lat + '&longi=' + longi + '&isAvailable=' + isAvailable;
+        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&isAvailable=' + isAvailable;
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
