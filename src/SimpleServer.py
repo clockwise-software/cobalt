@@ -92,7 +92,15 @@ def test():
 @app.route("/Employee/AddEmployee", methods = ['POST','GET'])
 def studentAddDetails():
     if request.method == 'GET':
-        return render_template('EmployeeData.html')
+        conn = sqlite3.connect(DATABASE)
+        cur = conn.cursor()
+        cur.execute("SELECT city FROM cities")
+        cities = cur.fetchall()
+        cur.execute("SELECT Title FROM license")
+        licenses = cur.fetchall()
+        cur.execute("SELECT Skill FROM skill")
+        skill = cur.fetchall()
+        return render_template('EmployeeData.html',cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
