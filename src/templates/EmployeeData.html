@@ -53,10 +53,9 @@
           <div class="form-group col-md-6">
             <label>City</label>
             <select class="custom-select" name="city">
-              <option selected>Choose a city</option>
-              <option>Santa Clara</option>
-              <option>Fresno</option>
-              <option>Laramie</option>
+              {% for city in cities %}
+              <option value="{{city[0]}}">{{city[0]}}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="form-group col-md-6">
@@ -78,19 +77,17 @@
           <div class="form-group col-md-4">
             <label>License</label>
             <select class="custom-select" name="licenses">
-              <option selected>Choose a license</option>
-              <option>GISP</option>
-              <option>PE</option>
-              <option>EIT</option>
+              {% for license in licenses %}
+              <option value="{{license[0]}}">{{license[0]}}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="form-group col-md-4">
             <label>Skill</label>
             <select class="custom-select" name="skills">
-              <option selected>Choose a skill</option>
-              <option>Remediation</option>
-              <option>Geologists</option>
-              <option>Stack Sampling</option>
+              {% for skills in skill %}
+              <option value="{{skills[0]}}">{{skills[0]}}</option>
+              {% endfor %}
             </select>
           </div>
           <div class="form-group col-md-4">
@@ -121,7 +118,7 @@
     </div>
   </div>
 </div>
-
+<br><br><br>
 
 <span id='txt'></span>
 
