@@ -98,6 +98,7 @@
 
 <script>
     function loadName() {
+        var xid = document.forms["myForm"]["id"].value;
         var firstName = document.forms["myForm"]["firstName"].value;
         var lastName = document.forms["myForm"]["lastName"].value;
         var jobStatus = document.forms["myForm"]["jobStatus"].value;
@@ -110,7 +111,7 @@
         var skills = document.forms["myForm"]["skills"].value;
         var skillLevel = document.forms["myForm"]["skillLevel"].value;
         var isAvailable = document.forms["myForm"]["isAvailable"].value;
-        params = 'firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&isAvailable=' + isAvailable;
+        params = 'xid=' + xid + '&firstName=' + firstName + '&lastName=' + lastName + '&jobStatus=' + jobStatus + '&businessUnit=' + businessUnit + '&city=' + city + '&state=' + state + '&careerTitle=' + careerTitle + '&totalYears=' + totalYears + '&licenses=' + licenses + '&skills=' + skills + '&skillLevel=' + skillLevel + '&isAvailable=' + isAvailable;
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
