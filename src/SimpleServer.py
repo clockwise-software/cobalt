@@ -40,33 +40,40 @@ def filterFind():
     filter2 = request.args.getlist('filter2')
     filter3 = request.args.getlist('filter3')
     filter4 = request.args.getlist('filter4')
-    if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
+    filter5 = request.args.get('filter5', '')
+    filter6 = request.args.get('filter6', 'and')
+    if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0 and filter5 == ''):
         html = render_template('EmployeeFilterResults.html', employeeList=[])
         return make_response(jsonify({"html": html}))
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     sql = ''
     params = []
+    comparison = " " + filter6 + " "
     for filter in filter1:
         if (sql != ''):
-            sql += " or "
+            sql += comparison
         sql += "RegisteredLicenses like ?"
         params.append("%" + filter + "%")
     for filter in filter2:
         if (sql != ''):
-            sql += " or "
+            sql += comparison
         sql += "skill like ?"
         params.append("%" + filter + "%")
     for filter in filter3:
         if (sql != ''):
-            sql += " or "
+            sql += comparison
         sql += "skillLevel like ?"
         params.append("%" + filter + "%")
     for filter in filter4:
         if (sql != ''):
-            sql += " or "
+            sql += comparison
         sql += "StateProvince like ?"
         params.append("%" + filter + "%")
+    if(filter5 != ''):
+        sql += comparison + " LastName like ?"
+        params.append("%" + filter5 + "%")
+    print("sql: " + sql)
     sql = "select * from EmployeeList where " + sql 
     print(sql)
     print(params)

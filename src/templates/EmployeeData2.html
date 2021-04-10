@@ -4,10 +4,10 @@
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-4">Admin Interface</h1>
-        <p class="lead">From this page you can edit, add, and delete all employees.</p>
+      <h1 class="display-4">Admin Interface</h1>
+      <p class="lead">From this page you can edit, add, and delete all employees.</p>
     </div>
-</div>
+  </div>
 
 <div class="content mt-4">
     <table class="table table-striped data-table">
@@ -42,8 +42,10 @@
 
             <td class="align-middle">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button id="orangeBtn" type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee'">Edit</button>
-                    <button id="orangeBtn" type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/DeleteEmployee'">Delete</button>
+                    <button type="button" class="btn btn-secondary orangeBtn"
+                        onclick="window.location.href='/Employee/UpdateEmployee'">Edit</button>
+                    <button type="button" class="btn btn-secondary orangeBtn"
+                        onclick="window.location.href='/Employee/DeleteEmployee'">Delete</button>
                 </div>
             </td>
         </tr>
@@ -58,12 +60,23 @@
         xhttp.open("POST", '/Employee/UpdateEmployee', true); // true is asynchronous
         return false;
     }
-  
+
     function delFunc() {
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/Employee/DeleteEmployee', true); // true is asynchronous
         return false;
     }
+
+    jQuery(document).ready(function ($) {
+        $('table.data-table').DataTable({
+            language: {
+                search: "Filter:"
+            },
+            stateSave: true,
+            fixedHeader: true,
+            paging: false
+        });
+    });
 
 </script>
 
