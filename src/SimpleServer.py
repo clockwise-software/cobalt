@@ -35,45 +35,44 @@ def filter():
     return render_template('EmployeeFilter.html', filter1=filter1, licenseData=licenseData, skillData=skillData, skillLevelData=skillLevelData, locationData = locationData)
 
 @app.route("/FilterSearch")
+
 def filterFind():
+    # Get Filters from args
     filter1 = request.args.getlist('filter1')
     filter2 = request.args.getlist('filter2')
     filter3 = request.args.getlist('filter3')
     filter4 = request.args.getlist('filter4')
+
+    # Check that not all filters are empty
     if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
         html = render_template('EmployeeFilterResults.html', employeeList=[])
         return make_response(jsonify({"html": html}))
+    
+    # Build search string for each filter
+    f1 = "(" + (" or ").join([f"RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
+    f2 = "(" + (" or ").join([f"skill like '%{f}%'" for f in filter2]) + ")"
+    f3 = "(" + (" or ").join([f"skillLevel like '%{f}%'" for f in filter3]) + ")"
+    f4 = "(" + (" or ").join([f"StateProvince like '%{f}%'" for f in filter4]) + ")"
+
+    # Combine filters and build sql string
+    f_strings = []
+    if len(f1) > 2: f_strings.append(f1)
+    if len(f2) > 2: f_strings.append(f2)
+    if len(f3) > 2: f_strings.append(f3)
+    if len(f4) > 2: f_strings.append(f4)
+    sql = (" and ").join(f_strings)
+    sql = "select * from EmployeeList where " + sql 
+    print("SQL:", sql)
+
+    # Connect to database, query, and print results
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    sql = ''
-    params = []
-    for filter in filter1:
-        if (sql != ''):
-            sql += " or "
-        sql += "RegisteredLicenses like ?"
-        params.append("%" + filter + "%")
-    for filter in filter2:
-        if (sql != ''):
-            sql += " or "
-        sql += "skill like ?"
-        params.append("%" + filter + "%")
-    for filter in filter3:
-        if (sql != ''):
-            sql += " or "
-        sql += "skillLevel like ?"
-        params.append("%" + filter + "%")
-    for filter in filter4:
-        if (sql != ''):
-            sql += " or "
-        sql += "StateProvince like ?"
-        params.append("%" + filter + "%")
-    sql = "select * from EmployeeList where " + sql 
-    print(sql)
-    print(params)
-    cur.execute(sql,params)
+    cur.execute(sql)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
-    print(employeeList)
+    #print("EMPLOYEE LIST:", employeeList)
+
+    # Render HTML and return from function
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
@@ -92,7 +91,15 @@ def test():
 @app.route("/Employee/AddEmployee", methods = ['POST','GET'])
 def studentAddDetails():
     if request.method == 'GET':
-        return render_template('EmployeeData.html')
+        conn = sqlite3.connect(DATABASE)
+        cur = conn.cursor()
+        cur.execute("SELECT city FROM cities")
+        cities = cur.fetchall()
+        cur.execute("SELECT Title FROM license")
+        licenses = cur.fetchall()
+        cur.execute("SELECT Skill FROM skill")
+        skill = cur.fetchall()
+        return render_template('EmployeeData.html',cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
@@ -176,9 +183,17 @@ def surnameSearch():
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
-    xid = request.args.get('xid', default="12") #default value so webpage loads for now, as it must be given an xid value. later xid value will be sent via which emp has their "edit" button clicked on on another webpage
+    xid = request.args.get('xid', default="2")
     if request.method == 'GET':
         print("label"+xid)
+        conn = sqlite3.connect(DATABASE)
+        cur = conn.cursor()
+        cur.execute("SELECT city FROM cities")
+        cities = cur.fetchall()
+        cur.execute("SELECT Title FROM license")
+        licenses = cur.fetchall()
+        cur.execute("SELECT Skill FROM skill")
+        skill = cur.fetchall()
         try:
             # rem: args for get form for post
             conn = sqlite3.connect(DATABASE)
@@ -195,7 +210,7 @@ def studentUpdateDetails():
                 for i in range(len(data)):
                     data[i]=None
             employee = data[0]
-            return render_template('EmployeeUpdate.html',data=employee)
+            return render_template('EmployeeUpdate.html',data=employee,cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
@@ -227,18 +242,15 @@ def studentUpdateDetails():
             conn.close()
             return msg
 
-@app.route("/Employee/DeleteEmployee", methods = ['POST','GET'])
+@app.route("/Employee/DeleteEmployee", methods = ['POST', 'GET'])
 def studentDeleteDetails():
-    if request.method == 'GET':
-        return render_template('EmployeeDelete.html')
     if request.method == 'POST':
-        firstName = request.form.get('firstName', default="Error")
-        lastName = request.form.get('lastName', default="Error")
-        print("deleting employee"+firstName)
+        xid = request.form.get('dxid', default="1")
+        print("deleting employee"+xid)
         try:
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
-            cur.execute("DELETE FROM 'EmployeeList' WHERE FirstName=? AND LastName=?", (firstName, lastName))
+            cur.execute("DELETE FROM 'EmployeeList' WHERE ID=?", [xid])
 
             conn.commit()
             msg = "Record successfully deleted" 
