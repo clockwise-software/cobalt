@@ -9,6 +9,13 @@
         <div class="row">
             <div class="col">
                 <form action="/FilterSearch" method="GET" id="filterForm">
+                    <div class="card card-body">
+                        Find employees with 
+                        <select name="filter6">
+                            <option value="and">all filters (employee search)</option>
+                            <option value="or">any filter (team builder)</option>
+                        </select>
+                    </div>
                     <div class="card">
                         <!--<div class="card-header">-->
                         <a class="card-header" data-toggle="collapse" href="#filter1" id="filterName">
@@ -17,22 +24,24 @@
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter1">
-                        {% for license in licenseData %}
-                        <input type="checkbox" name="filter1" value="{{license[1]}}"> {{license[1]}} <br>
-                        {% endfor %}
+                        <div style="height: 200px; overflow-y: scroll;">
+                            {% for license in licenseData %}
+                            <input type="checkbox" name="filter1" value="{{license[1]}}"> {{license[1]}} <br>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="card">
-                        <!--<div class="card-header">-->
                         <a class="card-header" data-toggle="collapse" href="#filter2">
                             Skill
                         </a>
-                        <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter2">
-                        {% for skill in skillData %}
-                        <input type="checkbox" name="filter2" value="{{skill[1]}}"> {{skill[1]}} <br>
-                        {% endfor %}
+                        <div style="height: 200px; overflow-y: scroll;">
+                            {% for skill in skillData %}
+                            <input type="checkbox" name="filter2" value="{{skill[1]}}"> {{skill[1]}} <br>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="card">
@@ -56,9 +65,11 @@
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter4">
-                        {% for location in locationData %}
-                        <input type="checkbox" name="filter4" value="{{location[0]}}"> {{location[0]}} <br>
-                        {% endfor %}
+                        <div style="height: 200px; overflow-y: scroll;">
+                            {% for location in locationData %}
+                            <input type="checkbox" name="filter4" value="{{location[0]}}"> {{location[0]}} <br>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div class="card">
@@ -69,12 +80,14 @@
                         <!--</div>-->
                     </div>
                     <div class="card-body collapse" id="filter5">
-                        <div class="form-group">
+                        <div class="input-group">
                             <input type="name" name="filter5" class="form-control" id="exampleFormControlInput1"
                                 placeholder="Last Name">
+                            <button class="btn btn-primary orangeBtn" type="button" id="lastNameSearch">Search</button>
                         </div>
                     </div>
                 </form>
+                <button type="button" class="btn btn-primary orangeBtn mt-4" download="Data.csv" onclick="ExportEmployees()">Export Data</button>
             </div>
         </div>
 
@@ -82,9 +95,8 @@
     <div class="col-10">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#employeeList" role="tab" aria-controls="home"
-                    aria-selected="true">Employee Results </a>
-                <!-- <button class="btn btn-link">Test</button> -->
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#employeeList" role="tab"
+                    aria-controls="home" aria-selected="true">Employee Results </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#map" role="tab" aria-controls="profile"
@@ -139,8 +151,11 @@
             fetchResults('#filterForm', '#employeeList')
         });
 
+        $('#lastNameSearch').click(function (e){
+            fetchResults('#filterForm', '#employeeList')
+        });
+
         $('#employeeList').change(function () {
-            console.log('Fix datatable');
             for (i = 0; i < dataTable.length; i++) {
                 if (dataTable[i] != null) {
                     dataTable[i].destroy();
@@ -148,7 +163,9 @@
                 dataTable[i] = null;
             }
             let dataTableTemp = $('table.data-table').DataTable({
-                searching: false,
+                language: {
+                    search: "Filter:"
+                },
                 stateSave: true,
                 fixedHeader: true,
                 paging: false
@@ -251,9 +268,42 @@
 
     });
 
+    function ExportEmployees(){
+        // Get rows in Employee Table
+        var CSV_Rows = [];
+        var OurTable = document.getElementById("EmployeeTable");
+        var TableRows = OurTable.getElementsByTagName('tr');
 
+        // Get Data from each row
+        for (var i = 0; i < TableRows.length; i++) {
+            var RowData = TableRows[i].getElementsByTagName('td');
+            var RowDataArray = [];
+            for(var j=0;j<RowData.length;j++){
+                RowDataArray.push('"'+RowData[j].innerText+'"');
+            }
+            CSV_Rows.push(RowDataArray);
+        }
 
+        // Log data to help with debugging
+        console.log('Found '+CSV_Rows.length+' rows of data in the table');
+        console.log(CSV_Rows);
 
+        // Build CSV content by row
+        let csvContent = "";
+        CSV_Rows.forEach(function(rowArray) {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+        console.log(csvContent)
+
+        // Encode CSV contect and finalize download functionality
+        var encodedContent = "data:text/csv;charset=utf-8;base64," + window.btoa(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedContent);
+        link.setAttribute("download", "EmployeeData.csv");
+        document.body.appendChild(link); 
+        link.click(); 
+    }
 </script>
 
 {%endblock%}

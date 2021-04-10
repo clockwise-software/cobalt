@@ -8,83 +8,119 @@
   </div>
 </div>
 
-<form id='myForm' onsubmit="return loadName()">
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>First Name</label>
-      <input type="text" name="firstName" class="form-control">
+<div class="mb-5">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#newEmployee" role="tab" aria-controls="home"
+        aria-selected="true">New Employee</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#import" role="tab" aria-controls="profile"
+        aria-selected="false">Import Employees</a>
+    </li>
+
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="newEmployee" role="tabpanel" aria-labelledby="home-tab">
+      <!--One-->
+      <form id='myForm' onsubmit="return loadName()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>First Name</label>
+            <input type="text" name="firstName" class="form-control">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Last Name</label>
+            <input type="text" name="lastName" class="form-control">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Job Status</label>
+            <select class="custom-select" name="jobStatus">
+              <option selected>Choose a status</option>
+              <option>Full-Time</option>
+              <option>3/4-Time</option>
+              <option>Part-Time</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Business Unit</label>
+            <input type="text" name="businessUnit" class="form-control">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>City</label>
+            <select class="custom-select" name="city">
+              <option selected>Choose a city</option>
+              <option>Santa Clara</option>
+              <option>Fresno</option>
+              <option>Laramie</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label>State/Province</label>
+            <input type="text" name="state" class="form-control">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Career Title</label>
+            <input type="text" name="careerTitle" class="form-control">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Total Years</label>
+            <input type="text" name="totalYears" class="form-control">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>License</label>
+            <select class="custom-select" name="licenses">
+              <option selected>Choose a license</option>
+              <option>GISP</option>
+              <option>PE</option>
+              <option>EIT</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Skill</label>
+            <select class="custom-select" name="skills">
+              <option selected>Choose a skill</option>
+              <option>Remediation</option>
+              <option>Geologists</option>
+              <option>Stack Sampling</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Skill Level</label>
+            <input type="text" name="skillLevel" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="isAvailable">
+            <label class="form-check-label" for="isAvailable">Is Available?</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary orangeBtn">Submit</button>
+      </form>
+
     </div>
-    <div class="form-group col-md-6">
-      <label>Last Name</label>
-      <input type="text" name="lastName" class="form-control">
+    <div class="tab-pane fade" id="import" role="tabpanel" aria-labelledby="profile-tab">
+      <!--Import-->
+    <br>
+      <a href="/static/Template.csv" download="Template.csv">
+        <p>Click here for Template File </p>
+      </a>
+      <form enctype="multipart/form-data" action="/ImportEmployees" method="post">
+        <p>Upload File: <input type="file" name="filename" /></p>
+        <button type="submit" value="Upload" class="btn btn-primary orangeBtn">Submit</button>
+      </form>
     </div>
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>Job Status</label>
-      <select class="custom-select" name="jobStatus">
-        <option selected>Full-Time</option>
-        <option>3/4-Time</option>
-        <option>Part-Time</option>
-      </select>
-    </div>
-    <div class="form-group col-md-6">
-      <label>Business Unit</label>
-      <input type="text" name="businessUnit" class="form-control">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>City</label>
-      <select class="custom-select" name="city">
-        {% for city in cities %}
-        <option value="{{city[0]}}">{{city[0]}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group col-md-6">
-      <label>State/Province</label>
-      <input type="text" name="state" class="form-control">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>Career Title</label>
-      <input type="text" name="careerTitle" class="form-control">
-    </div>
-    <div class="form-group col-md-6">
-      <label>Total Years</label>
-      <input type="text" name="totalYears" class="form-control">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label>License</label>
-      <select class="custom-select" name="licenses">
-        {% for license in licenses %}
-        <option value="{{license[0]}}">{{license[0]}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label>Skill</label>
-      <select class="custom-select" name="skills">
-        {% for skills in skill %}
-        <option value="{{skills[0]}}">{{skills[0]}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label>Skill Level</label>
-      <input type="text" name="skillLevel" class="form-control">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="isAvailable">
-      <label class="form-check-label" for="isAvailable">Is Available?</label>
-    </div>
-  </div>
+
   <button id="orangeBtn" type="submit" class="btn btn-primary">Submit</button>
 </form>
 <br><br><br>
@@ -92,15 +128,8 @@
 <span id='txt'></span>
 
 
-<h2>Import Batch Employee Data</h2>
 
-<a href="/static/Template.csv" download="Template.csv">
-  <p>Click here for Template File </p>
-</a>
-<form enctype="multipart/form-data" action="/ImportEmployees" method="post">
-  <p>Upload File: <input type="file" name="filename" /></p>
-  <p><input type="submit" value="Upload" /></p>
-</form>
+<span id='txt'></span>
 
 
 <script>
@@ -136,7 +165,7 @@
 </script>
 
 
-<h2>Import Batch Employee Data</h2>
+<!-- <h2>Import Batch Employee Data</h2>
 
 <a href="/static/Template.csv" download="Template.csv"><p>Click here for Template File </p></a>
 <form enctype = "multipart/form-data" action = "/ImportEmployees" method = "post">
@@ -144,6 +173,6 @@
    <p><input type = "submit" value = "Upload" class="btn btn-primary" /></p>
 </form>
 
-<br><br><br><br>
+<br><br><br><br> -->
 
 {%endblock%}
