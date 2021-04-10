@@ -17,7 +17,7 @@
     {% for employee in employeeList %}
     <!-- A List of tuples so row is each item in the list
             and then the index is the column number.-->
-        <tr>
+        <tr id="person{{employee['Id']}}">
             <td>{{employee['FirstName']}}</td>
             <td>{{employee['LastName']}}</td>
             <td>{{employee['BusinessUnit']}}</td>
@@ -33,6 +33,9 @@
 </div>
 
 <script>
+    var mapList = JSON.parse({{mapList|tojson|safe}});
+    console.log(mapList);
+
     function ExportEmployees(){
         // Get rows in Employee Table
         var CSV_Rows = [];

@@ -1,11 +1,11 @@
-{%extends 'generalPageStyledLeftColumn.html'%}
+{%extends 'generalPageStyled.html'%}
 
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">Add New Employee</h1>
-        <p class="lead">Add a new employee to the database.</p>
-    </div>
+  <div class="container">
+    <h1 class="display-4">Add New Employee Test</h1>
+    <p class="lead">Add a new employee to the database.</p>
+  </div>
 </div>
 
 <form id='myForm' onsubmit="return loadName()">
@@ -85,11 +85,23 @@
       <label class="form-check-label" for="isAvailable">Is Available?</label>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button id="orangeBtn" type="submit" class="btn btn-primary">Submit</button>
 </form>
 <br><br>
  
 <span id='txt'></span>
+
+
+<h2>Import Batch Employee Data</h2>
+
+<a href="/static/Template.csv" download="Template.csv">
+  <p>Click here for Template File </p>
+</a>
+<form enctype="multipart/form-data" action="/ImportEmployees" method="post">
+  <p>Upload File: <input type="file" name="filename" /></p>
+  <p><input type="submit" value="Upload" /></p>
+</form>
+
 
 <script>
   function loadName() {
@@ -109,7 +121,7 @@
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/Employee/AddEmployee', true); // true is asynchronous
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function() {
+    xhttp.onload = function () {
       if (xhttp.readyState === 4 && xhttp.status === 200) {
         console.log(xhttp.responseText);
         document.getElementById("txt").innerHTML = xhttp.responseText;
