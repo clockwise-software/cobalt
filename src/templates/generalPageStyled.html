@@ -17,7 +17,19 @@
 
     <link href="/static/css/styles.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="static/img/favicon.ico" />
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"	
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="	
+        crossorigin=""/>	
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"	
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="	
+        crossorigin="">	
+    </script>	
+    <style type="text/css">	
+        #lmap {	
+            height: 400px; 	
+            width: 800px;	
+    }	
+    </style>
 
     <!--Font Awesome-->
     <!--<link href="/static/css/all.css?v=5" rel="stylesheet">-->
@@ -52,18 +64,23 @@
                         <a class="nav-link" href="/Filter">Employee Search</a>
                         <i class="fas fa-search"></i>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Employee/UpdateEmployee">View Employee (User)</a>
-                        <i class="fas fa-search"></i>
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            User Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="/Employee/UpdateEmployee">View Employee</a>
+                        </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            View Employees (Admin)
+                            Admin Menu
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/AdminView">View</a>
-                            <a class="dropdown-item" href="/Employee/AddEmployee">Insert</a>
+                            <a class="dropdown-item" href="/AdminView">View Employees</a>
+                            <a class="dropdown-item" href="/Employee/AddEmployee">Add New Employee</a>
                         </div>
                     </li>
                 </ul>

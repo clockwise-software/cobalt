@@ -73,7 +73,10 @@ def filterFind():
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
 
-    ## provide a second list for just the mapping function
+    # Provide a second list for just the mapping function
+    params = []
+    for filter in filter1 + filter2 + filter3 + filter4:
+        params.append("%" + filter + "%")
     sql = sql + " order by a.StateProvince, a.City"
     cur.execute(sql,params)
     employeeList2 = cur.fetchall()
