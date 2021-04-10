@@ -183,7 +183,7 @@ def importEmployees():
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
     if request.method == 'GET':
-        xid = request.args.get('xid')
+        xid = request.args.get('xid',default="1")
         print("label"+xid)
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
@@ -211,7 +211,7 @@ def studentUpdateDetails():
             employee = data[0]
             return render_template('EmployeeUpdate.html',data=employee,cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
-        xid = request.form.get('xid')
+        xid = request.form.get('xid',default="1")
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
         jobStatus = request.form.get('jobStatus', default="Error")
