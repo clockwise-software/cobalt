@@ -4,10 +4,10 @@
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-4">Admin Interface</h1>
-        <p class="lead">From this page you can edit, add, and delete all employees.</p>
+      <h1 class="display-4">Admin Interface</h1>
+      <p class="lead">From this page you can edit, add, and delete all employees.</p>
     </div>
-</div>
+  </div>
 
 <div class="content mt-4">
     <table class="table table-striped data-table">
@@ -42,8 +42,8 @@
 
             <td class="align-middle">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee?xid={{employee['Id']}}'">Edit</button>
-                    <button type="button" class="btn btn-secondary delbtn" data-id="{{employee['Id']}}" xdata-toggle="modal" xdata-target="#delModal">Delete</button>
+                    <button type="button" class="btn btn-secondary orangeBtn" onclick="window.location.href='/Employee/UpdateEmployee?xid={{employee['Id']}}'">Edit</button>
+                    <button type="button" class="btn btn-secondary orangeBtn delbtn" data-id="{{employee['Id']}}" xdata-toggle="modal" xdata-target="#delModal">Delete</button>
                 </div>
             </td>
         </tr>
@@ -99,6 +99,17 @@
       xhttp.send(params);
       return false;
   }
+
+    jQuery(document).ready(function ($) {
+        $('table.data-table').DataTable({
+            language: {
+                search: "Filter:"
+            },
+            stateSave: true,
+            fixedHeader: true,
+            paging: false
+        });
+    });
 
 </script>
 

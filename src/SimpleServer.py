@@ -43,17 +43,27 @@ def filterFind():
     filter2 = request.args.getlist('filter2')
     filter3 = request.args.getlist('filter3')
     filter4 = request.args.getlist('filter4')
-
-    # Check that not all filters are empty
-    if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
+    filter5 = request.args.get('filter5', '')
+    filter6 = request.args.get('filter6', 'and')
+    if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0 and filter5 == ''):
         html = render_template('EmployeeFilterResults.html', employeeList=[], mapList=[])
         return make_response(jsonify({"html": html}))
     
     # Build search string for each filter
-    f1 = "(" + (" or ").join([f"a.RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
-    f2 = "(" + (" or ").join([f"a.skill like '%{f}%'" for f in filter2]) + ")"
-    f3 = "(" + (" or ").join([f"a.skillLevel like '%{f}%'" for f in filter3]) + ")"
-    f4 = "(" + (" or ").join([f"a.StateProvince like '%{f}%'" for f in filter4]) + ")"
+    comparison_within = ''
+    comparison_between = ''
+    if filter6 == "and":
+        comparison_within = " and "
+        comparison_between = " and "
+    else:
+        comparison_within = " or "
+        comparison_between = " and "
+
+    f1 = "(" + comparison_within.join([f"a.RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
+    f2 = "(" + comparison_within.join([f"a.skill like '%{f}%'" for f in filter2]) + ")"
+    f3 = "(" + comparison_within.join([f"a.skillLevel like '%{f}%'" for f in filter3]) + ")"
+    f4 = "(" + comparison_within.join([f"a.StateProvince like '%{f}%'" for f in filter4]) + ")"
+
 
     # Combine filters and build sql string
     f_strings = []
@@ -61,7 +71,11 @@ def filterFind():
     if len(f2) > 2: f_strings.append(f2)
     if len(f3) > 2: f_strings.append(f3)
     if len(f4) > 2: f_strings.append(f4)
-    sql = (" and ").join(f_strings)
+    sql = comparison_between.join(f_strings)
+    if filter5 != '':
+        if sql != '':
+            sql = "(" + sql + ") and"
+        sql = sql + f" a.LastName like '%{filter5}%'"
     #sql = "select * from EmployeeList where " + sql 
     sql = "select a.*, b.lat as lat2, b.lng as lng2 from EmployeeList as a left join cities as b on b.city = a.City and b.stateName = a.StateProvince where " + sql
     print("SQL:", sql)
@@ -74,11 +88,11 @@ def filterFind():
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
 
     # Provide a second list for just the mapping function
-    params = []
-    for filter in filter1 + filter2 + filter3 + filter4:
-        params.append("%" + filter + "%")
+    # params = []
+    # for filter in filter1 + filter2 + filter3 + filter4:
+    #     params.append("%" + filter + "%")
     sql = sql + " order by a.StateProvince, a.City"
-    cur.execute(sql,params)
+    cur.execute(sql)
     employeeList2 = cur.fetchall()
     employeeList2 = DBUtils.convertToDictionary(cur,employeeList2)
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList, mapList=json.dumps(employeeList2))
