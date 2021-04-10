@@ -8,6 +8,7 @@ import sqlite3
 import DBUtils
 import csv
 import io
+import json
 
 DATABASE = 'employee.db'
 
@@ -50,31 +51,36 @@ def filterFind():
     for filter in filter1:
         if (sql != ''):
             sql += " or "
-        sql += "RegisteredLicenses like ?"
+        sql += "a.RegisteredLicenses like ?"
         params.append("%" + filter + "%")
     for filter in filter2:
         if (sql != ''):
             sql += " or "
-        sql += "skill like ?"
+        sql += "a.skill like ?"
         params.append("%" + filter + "%")
     for filter in filter3:
         if (sql != ''):
             sql += " or "
-        sql += "skillLevel like ?"
+        sql += "a.skillLevel like ?"
         params.append("%" + filter + "%")
     for filter in filter4:
         if (sql != ''):
             sql += " or "
-        sql += "StateProvince like ?"
+        sql += "a.StateProvince like ?"
         params.append("%" + filter + "%")
-    sql = "select * from EmployeeList where " + sql 
+    sql = "select a.*, b.lat as lat2, b.lng as lng2 from EmployeeList as a left join cities as b on b.city = a.City and b.stateName = a.StateProvince where " + sql 
     print(sql)
     print(params)
     cur.execute(sql,params)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
-    print(employeeList)
-    html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
+
+    ## provide a second list for just the mapping function
+    sql = sql + " order by a.StateProvince, a.City"
+    cur.execute(sql,params)
+    employeeList2 = cur.fetchall()
+    employeeList2 = DBUtils.convertToDictionary(cur,employeeList2)
+    html = render_template('EmployeeFilterResults.html', employeeList=employeeList, mapList=json.dumps(employeeList2))
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
 
