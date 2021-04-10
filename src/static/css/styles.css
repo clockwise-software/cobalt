@@ -56,3 +56,7 @@ code {
     color: black;
 }
 
+#orangeBtn, #orangeBtn:hover, #orangeBtn:active, #orangeBtn:visited {
+  background-color: #ab5236 !important;
+  border-color: #ab5236;
+}

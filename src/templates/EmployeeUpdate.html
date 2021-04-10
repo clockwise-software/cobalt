@@ -1,4 +1,4 @@
-{%extends 'generalPageStyledLeftColumn.html'%}
+{%extends 'generalPageStyled.html'%}
 
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
@@ -24,7 +24,7 @@
     <div class="form-group col-md-6">
       <label>Job Status</label>
       <select class="custom-select" name="jobStatus" value="{{data[3]}}">
-        <option selected>Choose a status</option>
+        <option selected>{{data[3]}}</option>
         <option>Full-Time</option>
         <option>3/4-Time</option>
         <option>Part-Time</option>
@@ -39,10 +39,10 @@
     <div class="form-group col-md-6">
       <label>City</label>
       <select class="custom-select" name="city" value="{{data[5]}}">
-        <option selected>Choose a city</option>
-        <option>Santa Clara</option>
-        <option>Fresno</option>
-        <option>Laramie</option>
+        <option selected>{{data[5]}}</option>
+        {% for city in cities %}
+        <option value="{{city[0]}}">{{city[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-6">
@@ -64,19 +64,19 @@
     <div class="form-group col-md-4">
       <label>License</label>
       <select class="custom-select" name="licenses" value="{{data[9]}}">
-        <option selected>Choose a license</option>
-        <option>GISP</option>
-        <option>PE</option>
-        <option>EIT</option>
+        <option selected>{{data[9]}}</option>
+        {% for license in licenses %}
+        <option value="{{license[0]}}">{{license[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
       <label>Skill</label>
       <select class="custom-select" name="skills" value="{{data[10]}}">
-        <option selected>Choose a skill</option>
-        <option>Remediation</option>
-        <option>Geologists</option>
-        <option>Stack Sampling</option>
+        <option selected>{{data[10]}}</option>
+        {% for skills in skill %}
+        <option value="{{skills[0]}}">{{skills[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
@@ -90,7 +90,7 @@
       <label class="form-check-label">Is Available?</label>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button id="orangeBtn" type="submit" class="btn btn-primary">Submit</button>
 </form>
 <br><br><br><br><br><br>
 

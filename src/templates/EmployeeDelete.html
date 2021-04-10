@@ -1,13 +1,27 @@
-{%extends 'generalPageStyledLeftColumn.html'%}
+{%extends 'generalPageStyled.html'%}
 
 
 {%block mainBlock%}
-<h2>Delete Employees</h2>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Delete</h1>
+        <p class="lead">Delete an employee from admin privilege.</p>
+    </div>
+</div>
+
 <form id='myForm' onsubmit="return loadName()">
-  <label>First name:<input type = "text" name = "firstName"><br></label>
-  <label>Last name:<input type = "text" name = "lastName"><br></label>
-  <button type = "submit"> submit </button>
-</form>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>First Name</label>
+        <input type="text" name="firstName" class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label>Last Name</label>
+        <input type="text" name="lastName" class="form-control">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 
 <script>
     function loadName() {

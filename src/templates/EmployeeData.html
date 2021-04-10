@@ -1,11 +1,11 @@
-{%extends 'generalPageStyledLeftColumn.html'%}
+{%extends 'generalPageStyled.html'%}
 
 {%block mainBlock%}
 <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">Add New Employee</h1>
-        <p class="lead">Add a new employee to the database.</p>
-    </div>
+  <div class="container">
+    <h1 class="display-4">Add New Employee Test</h1>
+    <p class="lead">Add a new employee to the database.</p>
+  </div>
 </div>
 
 <form id='myForm' onsubmit="return loadName()">
@@ -23,8 +23,7 @@
     <div class="form-group col-md-6">
       <label>Job Status</label>
       <select class="custom-select" name="jobStatus">
-        <option selected>Choose a status</option>
-        <option>Full-Time</option>
+        <option selected>Full-Time</option>
         <option>3/4-Time</option>
         <option>Part-Time</option>
       </select>
@@ -38,10 +37,9 @@
     <div class="form-group col-md-6">
       <label>City</label>
       <select class="custom-select" name="city">
-        <option selected>Choose a city</option>
-        <option>Santa Clara</option>
-        <option>Fresno</option>
-        <option>Laramie</option>
+        {% for city in cities %}
+        <option value="{{city[0]}}">{{city[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-6">
@@ -63,19 +61,17 @@
     <div class="form-group col-md-4">
       <label>License</label>
       <select class="custom-select" name="licenses">
-        <option selected>Choose a license</option>
-        <option>GISP</option>
-        <option>PE</option>
-        <option>EIT</option>
+        {% for license in licenses %}
+        <option value="{{license[0]}}">{{license[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
       <label>Skill</label>
       <select class="custom-select" name="skills">
-        <option selected>Choose a skill</option>
-        <option>Remediation</option>
-        <option>Geologists</option>
-        <option>Stack Sampling</option>
+        {% for skills in skill %}
+        <option value="{{skills[0]}}">{{skills[0]}}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
@@ -89,11 +85,23 @@
       <label class="form-check-label" for="isAvailable">Is Available?</label>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button id="orangeBtn" type="submit" class="btn btn-primary">Submit</button>
 </form>
-<br><br><br><br><br><br>
+<br><br>
  
 <span id='txt'></span>
+
+
+<h2>Import Batch Employee Data</h2>
+
+<a href="/static/Template.csv" download="Template.csv">
+  <p>Click here for Template File </p>
+</a>
+<form enctype="multipart/form-data" action="/ImportEmployees" method="post">
+  <p>Upload File: <input type="file" name="filename" /></p>
+  <p><input type="submit" value="Upload" /></p>
+</form>
+
 
 <script>
   function loadName() {
@@ -113,7 +121,7 @@
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", '/Employee/AddEmployee', true); // true is asynchronous
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.onload = function() {
+    xhttp.onload = function () {
       if (xhttp.readyState === 4 && xhttp.status === 200) {
         console.log(xhttp.responseText);
         document.getElementById("txt").innerHTML = xhttp.responseText;
@@ -133,9 +141,9 @@
 <a href="/static/Template.csv" download="Template.csv"><p>Click here for Template File </p></a>
 <form enctype = "multipart/form-data" action = "/ImportEmployees" method = "post">
    <p>Upload File: <input type = "file" name = "filename" /></p>
-   <p><input type = "submit" value = "Upload" /></p>
+   <p><input type = "submit" value = "Upload" class="btn btn-primary" /></p>
 </form>
 
-
+<br><br><br><br>
 
 {%endblock%}
