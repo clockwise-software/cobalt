@@ -108,8 +108,8 @@
             <div class="tab-pane fade show active" id="employeeList" role="tabpanel" aria-labelledby="home-tab">
                 <p>Table goes here</p>
             </div>
-            <div class="tab-pane fade" id="profile" role="map" aria-labelledby="profile-tab">
-                <p>Map goes here</p>
+            <div class="tab-pane fade" id="map" role="map" aria-labelledby="profile-tab">
+                <div id="lmap" style="margin-top: 10px;"></div>
             </div>
         </div>
     </div>
@@ -117,6 +117,10 @@
 
 <script>
     var dataTable = [];
+    var mapInitialized = false;
+    var locationToLatLong = new Map();
+    var markers = new Array();
+    var map;
 
     jQuery(document).ready(function ($) {
 
@@ -135,6 +139,7 @@
                     html = data.html;
                     $(elementId).html(html);
                     $(elementId).trigger('change');
+                    renderResults();
                 },
                 error: function (request, error) {
                     $(elementId).html('<div class="alert alert-danger mt-4">Request Failed</div>');
@@ -168,10 +173,98 @@
             dataTable.push(dataTableTemp);
         });
 
-
         // fetch results when page first loads
-        fetchResults('#filterForm', '#employeeList')
+        fetchResults('#filterForm', '#employeeList');
 
+        // ensure map displays properly once its tab is switched to
+        // kludgey
+        $('#profile-tab').click(function (e) {
+            setTimeout(function () {
+                //window.dispatchEvent(new Event('resize'));
+                map.invalidateSize();
+                centerMap();
+            }, 1000);
+        });
+
+        function initMap() {
+            $('#lmap').width($('#myTab').width());
+            $('#lmap').height($('body').height() - $('header').height() - $('footer').height() - $('myTab').height() - 100);
+            //populateHashmap(); // TODO read from an external file of some sort
+            const wyo = { lat: 41.3114, lng: -105.5911 };
+            // The map, centered at Laramie
+            map = L.map('lmap').setView([wyo.lat, wyo.lng], 5);
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 11,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoiYmV0aGFueW1hZXR3IiwiYSI6ImNrbmFxcmk5ZjFrODYycW4xeTU5anhoY2oifQ.FOS2abK6UM4wKEaupspEig'
+            }).addTo(map);
+            mapInitialized = true;
+        }
+
+        function renderResults() {
+            if (!mapInitialized) return;
+
+            removePreviousMarkers();
+
+            let lastCity = '';
+            let lastLat = 0;
+            let lastLng = 0;
+            let markerContent = '';
+            for (i = 0; i < mapList.length; i++) {
+                if (lastCity != '' && lastCity != mapList[i].City) {
+                    addMarker({lat: lastLat, lng: lastLng}, lastCity, '<div style="height: 200px; overflow: scroll; overflow-x: hidden">' + markerContent + '</div>');
+                    markerContent = ''
+                    lastCity = mapList[i].City;
+                    lastLat = mapList[i].lat2;
+                    lastLng = mapList[i].lng2;
+                }
+                if (lastCity == '') {
+                    lastCity = mapList[i].City;
+                    lastLat = mapList[i].lat2;
+                    lastLng = mapList[i].lng2;
+                }
+                markerContent += '<div class="card card-body">' + $('#person' + mapList[i].Id).html().replace(/<td>/g,'').replace(/<\/td>/g,'<br />') + '</div>';
+            }
+            addMarker({lat: lastLat, lng: lastLng}, lastCity, '<div style="height: 200px; overflow: scroll; overflow-x: hidden">' + markerContent + '</div>');
+            centerMap();
+        }
+
+        function addMarker(location, cityState, info) {
+            var marker = L.marker([location.lat, location.lng],
+                {title: 'City: ' + cityState}
+            );
+            marker.bindPopup(info).openPopup();
+            marker.addTo(map);
+
+            //marker.bindPopup("<b>" + name + "</b>").openPopup();
+            // TODO if we had employee pictures we could set the marker icon
+            // to that picture
+            markers.push(marker);
+        }
+
+        function centerMap() {
+            var latLngs = [];
+            for (var t = 0; t < markers.length; t++) {
+                latLngs.push(markers[t].getLatLng())
+            }
+            if (latLngs.length > 0) {
+                var markerBounds = L.latLngBounds(latLngs);
+                map.fitBounds(markerBounds);
+            }
+        }
+
+        function removePreviousMarkers() {
+            for (var t = 0; t < markers.length; t++) {
+                var marker = markers[t];
+                map.removeLayer(marker);
+            }
+            markers = new Array(); // and delete markers by removing the references to them
+        }      
+
+        initMap();
 
     });
 
