@@ -183,7 +183,7 @@ def surnameSearch():
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
-    xid = request.args.get('xid', default="2") #default value so webpage loads for now, as it must be given an xid value. later xid value will be sent via which emp has their "edit" button clicked on on another webpage
+    xid = request.args.get('xid', default="8") #default value so webpage loads for now, as it must be given an xid value. later xid value will be sent via which emp has their "edit" button clicked on on another webpage
     if request.method == 'GET':
         print("label"+xid)
         conn = sqlite3.connect(DATABASE)

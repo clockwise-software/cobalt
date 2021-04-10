@@ -24,7 +24,8 @@
     <div class="form-group col-md-6">
       <label>Job Status</label>
       <select class="custom-select" name="jobStatus" value="{{data[3]}}">
-        <option selected>Full-Time</option>
+        <option selected>{{data[3]}}</option>
+        <option>Full-Time</option>
         <option>3/4-Time</option>
         <option>Part-Time</option>
       </select>
@@ -38,6 +39,7 @@
     <div class="form-group col-md-6">
       <label>City</label>
       <select class="custom-select" name="city" value="{{data[5]}}">
+        <option selected>{{data[5]}}</option>
         {% for city in cities %}
         <option value="{{city[0]}}">{{city[0]}}</option>
         {% endfor %}
@@ -62,6 +64,7 @@
     <div class="form-group col-md-4">
       <label>License</label>
       <select class="custom-select" name="licenses" value="{{data[9]}}">
+        <option selected>{{data[9]}}</option>
         {% for license in licenses %}
         <option value="{{license[0]}}">{{license[0]}}</option>
         {% endfor %}
@@ -70,6 +73,7 @@
     <div class="form-group col-md-4">
       <label>Skill</label>
       <select class="custom-select" name="skills" value="{{data[10]}}">
+        <option selected>{{data[10]}}</option>
         {% for skills in skill %}
         <option value="{{skills[0]}}">{{skills[0]}}</option>
         {% endfor %}
