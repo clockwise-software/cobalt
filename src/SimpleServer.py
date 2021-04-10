@@ -242,18 +242,15 @@ def studentUpdateDetails():
             conn.close()
             return msg
 
-@app.route("/Employee/DeleteEmployee", methods = ['POST','GET'])
+@app.route("/Employee/DeleteEmployee", methods = ['POST', 'GET'])
 def studentDeleteDetails():
-    if request.method == 'GET':
-        return render_template('EmployeeDelete.html')
     if request.method == 'POST':
-        firstName = request.form.get('firstName', default="Error")
-        lastName = request.form.get('lastName', default="Error")
-        print("deleting employee"+firstName)
+        xid = request.form.get('dxid', default="1")
+        print("deleting employee"+xid)
         try:
             conn = sqlite3.connect(DATABASE)
             cur = conn.cursor()
-            cur.execute("DELETE FROM 'EmployeeList' WHERE FirstName=? AND LastName=?", (firstName, lastName))
+            cur.execute("DELETE FROM 'EmployeeList' WHERE ID=?", [xid])
 
             conn.commit()
             msg = "Record successfully deleted" 
