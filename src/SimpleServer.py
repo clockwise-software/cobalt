@@ -8,6 +8,7 @@ import sqlite3
 import DBUtils
 import csv
 import io
+import json
 
 DATABASE = 'employee.db'
 
@@ -49,10 +50,10 @@ def filterFind():
         return make_response(jsonify({"html": html}))
     
     # Build search string for each filter
-    f1 = "(" + (" or ").join([f"RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
-    f2 = "(" + (" or ").join([f"skill like '%{f}%'" for f in filter2]) + ")"
-    f3 = "(" + (" or ").join([f"skillLevel like '%{f}%'" for f in filter3]) + ")"
-    f4 = "(" + (" or ").join([f"StateProvince like '%{f}%'" for f in filter4]) + ")"
+    f1 = "(" + (" or ").join([f"a.RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
+    f2 = "(" + (" or ").join([f"a.skill like '%{f}%'" for f in filter2]) + ")"
+    f3 = "(" + (" or ").join([f"a.skillLevel like '%{f}%'" for f in filter3]) + ")"
+    f4 = "(" + (" or ").join([f"a.StateProvince like '%{f}%'" for f in filter4]) + ")"
 
     # Combine filters and build sql string
     f_strings = []
@@ -61,7 +62,8 @@ def filterFind():
     if len(f3) > 2: f_strings.append(f3)
     if len(f4) > 2: f_strings.append(f4)
     sql = (" and ").join(f_strings)
-    sql = "select * from EmployeeList where " + sql 
+    #sql = "select * from EmployeeList where " + sql 
+    sql = "select a.*, b.lat as lat2, b.lng as lng2 from EmployeeList as a left join cities as b on b.city = a.City and b.stateName = a.StateProvince where " + sql
     print("SQL:", sql)
 
     # Connect to database, query, and print results
@@ -70,10 +72,13 @@ def filterFind():
     cur.execute(sql)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
-    #print("EMPLOYEE LIST:", employeeList)
 
-    # Render HTML and return from function
-    html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
+    ## provide a second list for just the mapping function
+    sql = sql + " order by a.StateProvince, a.City"
+    cur.execute(sql,params)
+    employeeList2 = cur.fetchall()
+    employeeList2 = DBUtils.convertToDictionary(cur,employeeList2)
+    html = render_template('EmployeeFilterResults.html', employeeList=employeeList, mapList=json.dumps(employeeList2))
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
 
