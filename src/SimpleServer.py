@@ -35,45 +35,44 @@ def filter():
     return render_template('EmployeeFilter.html', filter1=filter1, licenseData=licenseData, skillData=skillData, skillLevelData=skillLevelData, locationData = locationData)
 
 @app.route("/FilterSearch")
+
 def filterFind():
+    # Get Filters from args
     filter1 = request.args.getlist('filter1')
     filter2 = request.args.getlist('filter2')
     filter3 = request.args.getlist('filter3')
     filter4 = request.args.getlist('filter4')
+
+    # Check that not all filters are empty
     if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
         html = render_template('EmployeeFilterResults.html', employeeList=[])
         return make_response(jsonify({"html": html}))
+    
+    # Build search string for each filter
+    f1 = "(" + (" or ").join([f"RegisteredLicenses like '%{f}%'" for f in filter1]) + ")"
+    f2 = "(" + (" or ").join([f"skill like '%{f}%'" for f in filter2]) + ")"
+    f3 = "(" + (" or ").join([f"skillLevel like '%{f}%'" for f in filter3]) + ")"
+    f4 = "(" + (" or ").join([f"StateProvince like '%{f}%'" for f in filter4]) + ")"
+
+    # Combine filters and build sql string
+    f_strings = []
+    if len(f1) > 2: f_strings.append(f1)
+    if len(f2) > 2: f_strings.append(f2)
+    if len(f3) > 2: f_strings.append(f3)
+    if len(f4) > 2: f_strings.append(f4)
+    sql = (" and ").join(f_strings)
+    sql = "select * from EmployeeList where " + sql 
+    print("SQL:", sql)
+
+    # Connect to database, query, and print results
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    sql = ''
-    params = []
-    for filter in filter1:
-        if (sql != ''):
-            sql += " or "
-        sql += "RegisteredLicenses like ?"
-        params.append("%" + filter + "%")
-    for filter in filter2:
-        if (sql != ''):
-            sql += " or "
-        sql += "skill like ?"
-        params.append("%" + filter + "%")
-    for filter in filter3:
-        if (sql != ''):
-            sql += " or "
-        sql += "skillLevel like ?"
-        params.append("%" + filter + "%")
-    for filter in filter4:
-        if (sql != ''):
-            sql += " or "
-        sql += "StateProvince like ?"
-        params.append("%" + filter + "%")
-    sql = "select * from EmployeeList where " + sql 
-    print(sql)
-    print(params)
-    cur.execute(sql,params)
+    cur.execute(sql)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
-    print(employeeList)
+    #print("EMPLOYEE LIST:", employeeList)
+
+    # Render HTML and return from function
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
     return make_response(jsonify({"html": html}))
     ## return render_template('EmployeeFilterResults.html', employeeList=employeeList)
