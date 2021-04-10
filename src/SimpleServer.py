@@ -46,7 +46,7 @@ def filterFind():
     filter5 = request.args.get('filter5', '')
     filter6 = request.args.get('filter6', 'and')
     if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0 and filter5 == ''):
-        html = render_template('EmployeeFilterResults.html', employeeList=[])
+        html = render_template('EmployeeFilterResults.html', employeeList=[], mapList=[])
         return make_response(jsonify({"html": html}))
     
     # Build search string for each filter
@@ -86,11 +86,11 @@ def filterFind():
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
 
     # Provide a second list for just the mapping function
-    params = []
-    for filter in filter1 + filter2 + filter3 + filter4:
-        params.append("%" + filter + "%")
+    # params = []
+    # for filter in filter1 + filter2 + filter3 + filter4:
+    #     params.append("%" + filter + "%")
     sql = sql + " order by a.StateProvince, a.City"
-    cur.execute(sql,params)
+    cur.execute(sql)
     employeeList2 = cur.fetchall()
     employeeList2 = DBUtils.convertToDictionary(cur,employeeList2)
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList, mapList=json.dumps(employeeList2))
