@@ -183,9 +183,17 @@ def surnameSearch():
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
-    xid = request.args.get('xid', default="12") #default value so webpage loads for now, as it must be given an xid value. later xid value will be sent via which emp has their "edit" button clicked on on another webpage
+    xid = request.args.get('xid', default="2") #default value so webpage loads for now, as it must be given an xid value. later xid value will be sent via which emp has their "edit" button clicked on on another webpage
     if request.method == 'GET':
         print("label"+xid)
+        conn = sqlite3.connect(DATABASE)
+        cur = conn.cursor()
+        cur.execute("SELECT city FROM cities")
+        cities = cur.fetchall()
+        cur.execute("SELECT Title FROM license")
+        licenses = cur.fetchall()
+        cur.execute("SELECT Skill FROM skill")
+        skill = cur.fetchall()
         try:
             # rem: args for get form for post
             conn = sqlite3.connect(DATABASE)
@@ -202,7 +210,7 @@ def studentUpdateDetails():
                 for i in range(len(data)):
                     data[i]=None
             employee = data[0]
-            return render_template('EmployeeUpdate.html',data=employee)
+            return render_template('EmployeeUpdate.html',data=employee,cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
