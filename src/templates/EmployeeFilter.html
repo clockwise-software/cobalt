@@ -147,11 +147,10 @@
         });
 
         $('#lastNameSearch').click(function (e){
-            $('#employeeList').trigger('change');
+            fetchResults('#filterForm', '#employeeList')
         });
 
         $('#employeeList').change(function () {
-            console.log('Fix datatable');
             for (i = 0; i < dataTable.length; i++) {
                 if (dataTable[i] != null) {
                     dataTable[i].destroy();

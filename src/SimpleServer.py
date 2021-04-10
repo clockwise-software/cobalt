@@ -71,7 +71,9 @@ def filterFind():
         sql += "StateProvince like ?"
         params.append("%" + filter + "%")
     if(filter5 != ''):
-        sql += comparison + " LastName like ?"
+        if (sql != ''):
+            sql += comparison
+        sql += " LastName like ?"
         params.append("%" + filter5 + "%")
     print("sql: " + sql)
     sql = "select * from EmployeeList where " + sql 
