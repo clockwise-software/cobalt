@@ -164,35 +164,12 @@ def importEmployees():
     else:
         print("No File given")
         return render_template('EmployeeData.html')
-        
-
-@app.route("/Employee/Search", methods=['GET', 'POST'])
-def surnameSearch():
-    if request.method == 'GET':
-        return render_template('EmployeeSearch.html')
-    if request.method == 'POST':
-        try:
-            # rem: args for get form for post
-            lastName = request.form.get('lastName', default="Error")
-            conn = sqlite3.connect(DATABASE)
-            cur = conn.cursor()
-            cur.execute(
-                "SELECT * FROM 'EmployeeList' WHERE LastName=?", [lastName])
-            data = cur.fetchall()
-            print(data)
-        except:
-            print('there was an error', data)
-            conn.close()
-        finally:
-            conn.close()
-            # return str(data)
-            return render_template('Employee.html', data=data)
 
 
 @app.route("/Employee/UpdateEmployee", methods=['POST', 'GET'])
 def studentUpdateDetails():
-    xid = request.args.get('xid', default="2")
     if request.method == 'GET':
+        xid = request.args.get('xid')
         print("label"+xid)
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
@@ -220,6 +197,7 @@ def studentUpdateDetails():
             employee = data[0]
             return render_template('EmployeeUpdate.html',data=employee,cities=cities,licenses=licenses,skill=skill)
     if request.method == 'POST':
+        xid = request.form.get('xid')
         firstName = request.form.get('firstName', default="Error")
         lastName = request.form.get('lastName', default="Error")
         jobStatus = request.form.get('jobStatus', default="Error")
@@ -253,7 +231,7 @@ def studentUpdateDetails():
 @app.route("/Employee/DeleteEmployee", methods = ['POST', 'GET'])
 def studentDeleteDetails():
     if request.method == 'POST':
-        xid = request.form.get('dxid', default="1")
+        xid = request.form.get('xid', default="0")
         print("deleting employee"+xid)
         try:
             conn = sqlite3.connect(DATABASE)

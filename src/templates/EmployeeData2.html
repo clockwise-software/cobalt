@@ -42,8 +42,8 @@
 
             <td class="align-middle">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee'">Edit</button>
-                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#delModal">Delete</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/Employee/UpdateEmployee?xid={{employee['Id']}}'">Edit</button>
+                    <button type="button" class="btn btn-secondary delbtn" data-id="{{employee['Id']}}" xdata-toggle="modal" xdata-target="#delModal">Delete</button>
                 </div>
             </td>
         </tr>
@@ -66,22 +66,39 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="delFunc(employee['Id'])">Yes, Delete</button>
+          <button type="button" class="btn btn-primary" id="finaldelbtn" onclick="">Yes, Delete</button>
         </div>
       </div>
     </div>
   </div>
 
 <script>
-      
-    function delFunc(xid) {
-        var dxid = xid;
-        params = 'xid=' + dxid;
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", '/Employee/DeleteEmployee', true); // true is asynchronous
-        xhttp.send(params);
-        return false;
-    }
+  jQuery(document).ready(function ($) {
+    $('.delbtn').click(function(){
+      $('#delModal').modal('show');
+      let xid = $(this).data('id');
+      $('#finaldelbtn').attr("onclick","delFunc("+xid+")");
+    }); 
+    
+  }); 
+  
+  function delFunc(xid) {
+      var dxid = xid;
+      params = 'xid=' + dxid;
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", '/Employee/DeleteEmployee', true); // true is asynchronous
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.onload = function () {
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
+                console.log(xhttp.responseText);
+                window.location='/AdminView';
+            } else {
+                console.error(xhttp.statusText);
+            }
+        };
+      xhttp.send(params);
+      return false;
+  }
 
 </script>
 
