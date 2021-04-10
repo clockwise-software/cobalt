@@ -69,7 +69,7 @@ def filterFind():
     cur.execute(sql)
     employeeList = cur.fetchall()
     employeeList = DBUtils.convertToDictionary(cur,employeeList)
-    print("EMPLOYEE LIST:", employeeList)
+    #print("EMPLOYEE LIST:", employeeList)
 
     # Render HTML and return from function
     html = render_template('EmployeeFilterResults.html', employeeList=employeeList)
