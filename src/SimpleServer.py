@@ -46,7 +46,7 @@ def filterFind():
 
     # Check that not all filters are empty
     if (len(filter1) == 0 and len(filter2) == 0 and len(filter3) == 0 and len(filter4) == 0):
-        html = render_template('EmployeeFilterResults.html', employeeList=[])
+        html = render_template('EmployeeFilterResults.html', employeeList=[], mapList=[])
         return make_response(jsonify({"html": html}))
     
     # Build search string for each filter
