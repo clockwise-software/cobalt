@@ -71,9 +71,11 @@ def filterFind():
     if len(f2) > 2: f_strings.append(f2)
     if len(f3) > 2: f_strings.append(f3)
     if len(f4) > 2: f_strings.append(f4)
-    sql = comparison_between.join(f_strings) 
+    sql = comparison_between.join(f_strings)
     if filter5 != '':
-        sql = sql + f" and a.LastName like '%{filter5}%"
+        if sql != '':
+            sql = "(" + sql + ") and"
+        sql = sql + f" a.LastName like '%{filter5}%'"
     #sql = "select * from EmployeeList where " + sql 
     sql = "select a.*, b.lat as lat2, b.lng as lng2 from EmployeeList as a left join cities as b on b.city = a.City and b.stateName = a.StateProvince where " + sql
     print("SQL:", sql)
