@@ -228,7 +228,9 @@
                 }
                 markerContent += '<div class="card card-body">' + $('#person' + mapList[i].Id).html().replace(/<td>/g,'').replace(/<\/td>/g,'<br />') + '</div>';
             }
-            addMarker({lat: lastLat, lng: lastLng}, lastCity, '<div style="height: 200px; overflow: scroll; overflow-x: hidden">' + markerContent + '</div>');
+            if (mapList.length > 0) { // don't add spurious marker after iterating through an empty list
+                addMarker({lat: lastLat, lng: lastLng}, lastCity, '<div style="height: 200px; overflow: scroll; overflow-x: hidden">' + markerContent + '</div>');
+            }
             centerMap();
         }
 
