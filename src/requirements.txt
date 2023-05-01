@@ -1,4 +1,4 @@
-Flask==1.1.2
+Flask==2.3.2
 click-plugins==1.1.1  
 cligj==0.7.1 
 fiona==1.8.18 
